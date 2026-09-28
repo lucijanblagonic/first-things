@@ -1,0 +1,29 @@
+schema: spec-driven
+
+context: |
+  Product: "Decision Matrix" — a minimalist, keyboard-first TODO app organised as a
+  4-quadrant importance/urgency matrix (Randy Pausch / Eisenhower). Think "Linear, but
+  for personal priorities". Single user, runs entirely in the browser.
+
+  Tech stack:
+  - Vanilla HTML + CSS + JavaScript (ES modules). NO build step, NO framework,
+    NO runtime dependencies. The repo root must be deployable to GitHub Pages as-is.
+  - JSDoc type annotations on public functions (no TypeScript compilation).
+  - Persistence via a storage adapter interface; localStorage is the only adapter for now.
+  - Dev-only tooling (package.json devDependencies) is allowed for tests:
+    node:test for unit tests, Playwright + @axe-core/playwright for e2e/a11y.
+  - Node >= 20 for tooling (the machine's default Node 18 is too old for OpenSpec).
+
+  Conventions:
+  - Pure, DOM-free logic (state, actions, persistence) lives in src/core/ and is unit tested.
+  - DOM/rendering/keyboard code lives in src/ui/.
+  - CSS uses custom properties (design tokens) for all colors, spacing and radii;
+    light/dark themes are token overrides only.
+  - Accessibility target: WCAG 2.2 AA. Every action must be doable by keyboard alone.
+  - Conventional commits.
+
+rules:
+  tasks:
+    - Tasks must be small and concrete enough for a less capable model to implement without further design decisions
+    - Reference the exact file paths to create or edit
+    - Every task group ends with a verification step (test command or manual check)
