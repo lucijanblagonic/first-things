@@ -179,7 +179,7 @@ test('Do is emphasised without shifting its content relative to its neighbour', 
   expect(widths[0]).toBe(widths[1]);
 });
 
-test('quadrant surfaces step down with priority, in both themes', async ({ page }) => {
+test('Do is the one raised card; the other quadrants are flat and alike, in both themes', async ({ page }) => {
   for (const colorScheme of /** @type {const} */ (['light', 'dark'])) {
     await page.emulateMedia({ colorScheme });
     await page.goto('/');
@@ -191,24 +191,49 @@ test('quadrant surfaces step down with priority, in both themes', async ({ page 
         }),
       ),
     );
-    const transparent = /rgba\(0, 0, 0, 0\)|transparent/;
 
-    // Do: the one raised card, solid, with no outline that could read as focus.
+    // Do: raised by a shadow, with no outline that could read as focus.
     expect(cards.do.shadow, colorScheme).not.toBe('none');
-    expect(cards.do.background, colorScheme).not.toMatch(transparent);
     expect(cards.do.outline, colorScheme).toBe('none');
 
-    // Plan and Delegate: see-through, flat.
-    for (const id of ['plan', 'limit']) {
-      expect(cards[id].background, `${id} ${colorScheme}`).toMatch(transparent);
+    // The other three: flat, solid, and the same surface as each other.
+    for (const id of ['plan', 'limit', 'drop']) {
       expect(cards[id].shadow, `${id} ${colorScheme}`).toBe('none');
+      expect(cards[id].background, `${id} ${colorScheme}`).not.toMatch(/rgba\(0, 0, 0, 0\)|transparent/);
+      expect(cards[id].background, `${id} ${colorScheme}`).toBe(cards.plan.background);
     }
 
-    // Eliminate: its own dimmed surface, flat.
-    expect(cards.drop.background, colorScheme).not.toMatch(transparent);
-    expect(cards.drop.background, colorScheme).not.toBe(cards.do.background);
-    expect(cards.drop.shadow, colorScheme).toBe('none');
+    // Light theme: every card, Do included, is the same white surface.
+    if (colorScheme === 'light') expect(cards.do.background).toBe(cards.plan.background);
   }
+});
+
+test('the delete toast uses the subtle border, not the strong one', async ({ page }) => {
+  await page.goto('/');
+  await addTask(page, 'do', 'Soon gone');
+  await page.locator('#do-list li .task-delete-button').click();
+  const toast = page.locator('.toast');
+  await expect(toast).toBeVisible();
+
+  const colors = await page.evaluate(() => {
+    const probe = document.createElement('div');
+    document.body.append(probe);
+    const resolve = (/** @type {string} */ token) => {
+      probe.style.color = `var(${token})`;
+      return getComputedStyle(probe).color;
+    };
+    const result = {
+      subtle: resolve('--color-border'),
+      strong: resolve('--color-border-strong'),
+      toast: getComputedStyle(/** @type {Element} */ (document.querySelector('.toast'))).borderTopColor,
+      undo: getComputedStyle(/** @type {Element} */ (document.querySelector('.toast-undo-button'))).borderTopColor,
+    };
+    probe.remove();
+    return result;
+  });
+  expect(colors.subtle).not.toBe(colors.strong);
+  expect(colors.toast).toBe(colors.subtle);
+  expect(colors.undo).toBe(colors.subtle);
 });
 
 test('quadrant headers show no task count', async ({ page }) => {

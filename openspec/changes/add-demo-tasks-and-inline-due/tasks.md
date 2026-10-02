@@ -8,7 +8,8 @@
 
 - [x] 1b.1 In `styles/tokens.css`, add `--color-surface-flat`, `--color-border-flat`, `--color-surface-do`, `--shadow-raised` and `--color-hover-row` for both themes; in `styles/board.css`, make Do the raised card and the other quadrants flat, with High contrast keeping outlines; in `styles/task.css`, stop rows painting their own background and use the translucent hover; verify the raised-card test in `tests/e2e/appearance.spec.js` in both themes and that the axe scans in `tests/e2e/a11y.spec.js` still pass
 
-- [x] 1b.2 Make Plan and Delegate see-through and Eliminate dimmed (`--color-surface-flat: transparent`, `--color-surface-dim`), and turn the drop-target tint into a translucent wash so it shows on every surface; verify the surfaces test in `tests/e2e/appearance.spec.js` in both themes
+- [x] 1b.2 Keep all four quadrants on the same surface, enlarge Do's shadow (`--shadow-raised`), and turn the drop-target tint into a translucent wash; verify the raised-card test in `tests/e2e/appearance.spec.js` in both themes
+- [x] 1b.5 In `styles/dialog.css`, use `--color-border` for the toast and its Undo button; verify the toast test in `tests/e2e/appearance.spec.js`
 - [x] 1b.3 Remove the per-quadrant count from `index.html`, `src/ui/render.js` and `styles/board.css`, and its assertions from `tests/e2e/tasks.spec.js`; verify the no-count test in `tests/e2e/appearance.spec.js`
 - [x] 1b.4 Remove the empty-quadrant hint from `index.html`, `src/ui/render.js`, `styles/board.css` and `styles/kbd.css`; verify the empty-quadrant test in `tests/e2e/appearance.spec.js`
 

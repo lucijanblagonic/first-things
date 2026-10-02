@@ -43,18 +43,17 @@ real first visit. *Alternative:* clearing in every spec — an init script would
 run on reload and wipe state mid-test.
 
 ### D5. Do as a raised card
-Tokens per theme: `--color-surface-do` and `--shadow-raised` for Do,
-`--color-surface-flat` (transparent) and `--color-border-flat` for Plan and Delegate,
-`--color-surface-dim` for Eliminate. In the light theme Do is white with a two-layer
-shadow, Plan and Delegate show the page through, and Eliminate is a step greyer than
-the page. Shadows barely register on a dark page, so in the dark theme Do is also a
-step lighter, and Eliminate a step darker, than the page. Border
-width is the same on all four, so nothing shifts. Task rows no longer paint their own
-background, and row hover and the drop-target tint are translucent washes
-(`--color-hover-row`) so they show on any of the three surfaces. High contrast keeps outlines on every card and adds an inset line to
-Do on top of the shadow. *Alternatives shown to the user:* a thicker border darker
-or lighter than the focus ring, a filled "1" badge, and combinations; the raised card
-was chosen because it uses no outline and so cannot be confused with focus.
+All four quadrants use `--color-surface` and the same 1px `--color-border`, so nothing
+shifts. Do adds `--shadow-raised`, a two-layer shadow (a tight one for the edge and a
+wide, soft one for lift). Shadows barely register on a dark page, so in the dark
+theme `--color-surface-do` is also a step lighter than the other cards. Task rows no
+longer paint their own background, and row hover and the drop-target tint are
+translucent washes (`--color-hover-row`). High contrast adds an inset line to Do on
+top of the shadow. *Alternatives shown to the user:* a thicker border darker or
+lighter than the focus ring, a filled "1" badge, and combinations; the raised card
+was chosen because it uses no outline and so cannot be confused with focus. A
+variant with see-through Plan and Delegate and a dimmed Eliminate was tried and
+dropped in favour of four alike surfaces.
 
 ### D6. No count, no empty hint
 The count element and its render code are removed (`openCount` stays in

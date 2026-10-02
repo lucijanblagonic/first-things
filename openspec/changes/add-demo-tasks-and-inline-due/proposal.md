@@ -16,10 +16,11 @@ does not stand out where the eye reads first.
   feature. They are ordinary tasks and are seeded only once: after they are deleted,
   or after any board has been saved, they do not come back.
 
-- Quadrant surfaces step down with priority. Do is the one raised card: a bright
-  surface with a shadow. Plan and Delegate are see-through outlines on the page.
-  Eliminate is dimmed. No outline is used for emphasis, so it cannot be mistaken for
-  focus.
+- Emphasise the Do quadrant as the one raised card: all four quadrants share the same
+  surface, and Do alone has a large shadow. No outline is used for emphasis, so it
+  cannot be mistaken for focus.
+- Soften the "Deleted" toast: its border and its Undo button's border use the subtle
+  border colour instead of the strong one.
 - Remove the task count from each quadrant header.
 - Remove the "No tasks yet" hint from empty quadrants; an empty quadrant shows its
   heading and the "Add task" button.
@@ -49,9 +50,8 @@ quadrants; those scenarios are updated in place to mention the example tasks.
   separate meta row is removed).
 - New `src/core/demo.js`; `src/core/store.js` (optional `seedTasks`), `src/main.js`,
   `sw.js` (precache list).
-- `styles/tokens.css`, `styles/board.css`, `styles/task.css` (raised Do card,
-  see-through Plan and Delegate, dimmed Eliminate, row hover and drop target as a
-  translucent wash).
+- `styles/tokens.css`, `styles/board.css`, `styles/task.css` (raised Do card, row
+  hover and drop target as a translucent wash); `styles/dialog.css` (toast borders).
 - `index.html`, `src/ui/render.js`, `styles/board.css`, `styles/kbd.css` (count and
   empty hint removed).
 - Tests: new `tests/e2e/demo.spec.js`, `tests/unit/demo.test.js`; store tests;

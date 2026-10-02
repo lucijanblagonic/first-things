@@ -13,16 +13,16 @@ Each quadrant SHALL show its active tasks (not archived) in the user-defined ord
 - **WHEN** a quadrant has no active tasks
 - **THEN** it shows its heading and the "Add task" control, and no "No tasks yet" text
 
-### Requirement: Quadrant surfaces follow priority
-The four quadrants SHALL differ in surface, in neutral tones only, so that priority is readable at a glance: Do SHALL be a raised card with the brightest surface and a shadow; Plan and Delegate SHALL be flat and let the page background show through; Eliminate SHALL be flat with a dimmed surface. All four SHALL keep the same border width so their contents align. Text on every surface SHALL keep the contrast required by the theming capability.
+### Requirement: Do is the one raised quadrant
+All four quadrants SHALL share the same surface and border width, so their contents align. The Do quadrant alone SHALL appear raised, by means of a shadow, and SHALL NOT be emphasised by an outline that could be mistaken for a focus indicator. In the dark theme, where a shadow is hard to see, Do MAY additionally use a lighter surface than the other three.
 
 #### Scenario: Light theme
 - **WHEN** the board is shown in the light theme
-- **THEN** Do is white with a shadow, Plan and Delegate show the page background, and Eliminate is slightly greyer than the page
+- **THEN** all four quadrants are the same white surface, and only Do has a shadow
 
 #### Scenario: Dark theme
 - **WHEN** the board is shown in the dark theme
-- **THEN** Do is lighter than the page with a shadow, Plan and Delegate show the page background, and Eliminate is slightly darker than the page
+- **THEN** Plan, Delegate and Eliminate share one surface, and Do has a shadow and is distinguishable from them
 
 ## REMOVED Requirements
 

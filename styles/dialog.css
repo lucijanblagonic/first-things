@@ -384,7 +384,7 @@ dialog h2 {
   gap: var(--space-3);
   background: var(--color-surface-raised);
   color: var(--color-text);
-  border: 1px solid var(--color-border-strong);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-md);
   padding: var(--space-2) var(--space-3);
@@ -393,7 +393,7 @@ dialog h2 {
 .toast-undo-button {
   display: inline-flex;
   align-items: center;
-  border: 1px solid var(--color-border-strong);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: none;
   color: var(--color-text);

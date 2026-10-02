@@ -193,27 +193,22 @@ body {
   flex-direction: column;
   min-height: 0;
   min-width: 0;
-  background: var(--color-surface-flat);
-  border: 1px solid var(--color-border-flat);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--space-4);
 }
 
-/* Do is the one raised card: the full surface colour and a shadow, while
-   Plan and Delegate are see-through and Eliminate is dimmed. No outline, so it can't be mistaken for focus, and
+/* Do is the one raised card: the same surface as the others plus a large
+   shadow (and, in the dark theme, a step lighter). No outline, so it can't be mistaken for focus, and
    the same border width as the others, so its content lines up with theirs. */
 .quadrant-do {
   --quadrant-area: do;
   background: var(--color-surface-do);
-  border-color: var(--color-border);
   box-shadow: var(--shadow-raised);
 }
 
-/* High contrast keeps every card outlined and adds weight to Do's border. */
-:root[data-contrast='high'] .quadrant {
-  border-color: var(--color-border);
-}
-
+/* High contrast adds weight to Do's border on top of the shadow. */
 :root[data-contrast='high'] .quadrant-do {
   border-color: var(--color-border-strong);
   box-shadow: inset 0 0 0 1px var(--color-border-strong), var(--shadow-raised);
@@ -227,10 +222,8 @@ body {
   --quadrant-area: limit;
 }
 
-/* Eliminate, the lowest priority, recedes into a dimmer surface. */
 .quadrant-drop {
   --quadrant-area: drop;
-  background: var(--color-surface-dim);
 }
 
 .quadrant-header {
