@@ -85,7 +85,11 @@ export function initSettingsDialog({ openButton, keyboard }) {
   });
 
   dialog.addEventListener('close', () => {
-    if (returnFocusEl && document.contains(returnFocusEl)) returnFocusEl.focus();
+    // `close` fires asynchronously, so focus may already have moved on by
+    // the time this runs; only restore it if nothing else has taken it.
+    const active = document.activeElement;
+    const focusMovedOn = active instanceof HTMLElement && active !== document.body && !dialog.contains(active);
+    if (!focusMovedOn && returnFocusEl && document.contains(returnFocusEl)) returnFocusEl.focus();
     returnFocusEl = null;
   });
 
