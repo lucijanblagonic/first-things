@@ -10,13 +10,13 @@ async function addDoTask(page, title) {
   await page.keyboard.press('Escape');
 }
 
-test('settings button opens a dialog with Layout, Keyboard and Shortcuts sections', async ({ page }) => {
+test('settings button opens a dialog with Layout, Keyboard, Data and Shortcuts sections', async ({ page }) => {
   await page.goto('/');
   await page.click('#settings-button');
   const dialog = page.locator('#settings-dialog');
   await expect(dialog).toBeVisible();
   await expect(dialog.getByRole('heading', { level: 2 })).toHaveText('Settings');
-  await expect(dialog.locator('h3')).toHaveText(['Layout', 'Keyboard', 'Shortcuts']);
+  await expect(dialog.locator('h3')).toHaveText(['Layout', 'Keyboard', 'Data', 'Shortcuts']);
   await expect(dialog.locator('.shortcut-group h4')).toHaveText(['Navigate', 'Tasks', 'App']);
   // Focus starts on the selected layout option.
   await expect(page.locator('input[name="layout"][value="urgent-right"]')).toBeFocused();

@@ -174,6 +174,25 @@ export function createStore({ adapter, now = () => new Date(), timers = defaultT
       scheduleSave();
     },
 
+    /**
+     * Replaces every task at once (import). The previous board is handed to
+     * the adapter's backup first. Refused while the stored data is from a
+     * newer version, since saving over it is not allowed.
+     * @param {Task[]} tasks
+     * @returns {Promise<boolean>} false if the replacement was refused
+     */
+    async replaceAll(tasks) {
+      if (status === 'newer-version') return false;
+      if (adapter.backup && state.tasks.length > 0) {
+        await adapter.backup(JSON.stringify({ version: CURRENT_VERSION, tasks: state.tasks }));
+      }
+      clearUndo();
+      state.tasks = tasks;
+      notify();
+      scheduleSave();
+      return true;
+    },
+
     subscribe(fn) {
       listeners.add(fn);
       return () => listeners.delete(fn);

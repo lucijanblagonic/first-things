@@ -8,6 +8,8 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:4173',
     trace: 'on-first-retry',
+    // Existing specs must not be affected by sw.js; tests/e2e/pwa.spec.js opts back in.
+    serviceWorkers: 'block',
   },
   webServer: {
     command: 'npm run serve',

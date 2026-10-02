@@ -8,6 +8,7 @@ import { initToast, showUndoToast, showBanner } from './ui/toast.js';
 import { initTheme } from './ui/theme.js';
 import { initDialogs } from './ui/dialogs.js';
 import { initSettingsDialog } from './ui/settings.js';
+import { initDataTransfer } from './ui/data-transfer.js';
 import { initTooltips } from './ui/tooltip.js';
 import { createFocusController } from './ui/focus.js';
 import { initKeyboard, renderShortcutsReference } from './ui/keyboard.js';
@@ -161,6 +162,7 @@ async function main() {
     openButton: /** @type {HTMLElement} */ (document.getElementById('settings-button')),
     keyboard,
   });
+  initDataTransfer({ store, now });
   renderShortcutsReference();
 
   initDnd({ store, announce, focus });
@@ -179,6 +181,11 @@ async function main() {
     adapter.subscribe(() => {
       store.reloadFromAdapter();
     });
+  }
+
+  // Offline support is best-effort: the app works online without it.
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
   }
 }
 

@@ -9,6 +9,9 @@ import { announce } from './announcer.js';
 const STORAGE_KEY = 'decision-matrix:theme';
 const ORDER = ['system', 'light', 'dark'];
 const LABEL = { system: 'System', light: 'Light', dark: 'Dark' };
+// Page background per theme (--color-bg in tokens.css), mirrored into the
+// <meta name="theme-color"> tags so browser/app chrome matches a manual choice.
+const THEME_COLOR = { light: '#f5f5f5', dark: '#141414' };
 
 /**
  * @returns {'system' | 'light' | 'dark'}
@@ -42,6 +45,10 @@ function applyPreference(pref) {
     document.documentElement.removeAttribute('data-theme');
   } else {
     document.documentElement.setAttribute('data-theme', pref);
+  }
+  for (const meta of document.querySelectorAll('meta[name="theme-color"]')) {
+    const scheme = (meta.getAttribute('media') ?? '').includes('dark') ? 'dark' : 'light';
+    meta.setAttribute('content', THEME_COLOR[pref === 'system' ? scheme : pref]);
   }
 }
 

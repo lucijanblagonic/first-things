@@ -100,3 +100,24 @@ test('theme button shows the icon for the current preference and an updated tool
   await expect(tooltip).toHaveText('Theme: Dark');
   await expect(page.locator('#live-region')).toHaveText('Theme: Dark');
 });
+
+test('theme-color follows a manual theme choice', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'light' });
+  await page.goto('/');
+  const lightMeta = page.locator('meta[name="theme-color"][media*="light"]');
+  const darkMeta = page.locator('meta[name="theme-color"][media*="dark"]');
+  await expect(lightMeta).toHaveAttribute('content', '#f5f5f5');
+  await expect(darkMeta).toHaveAttribute('content', '#141414');
+
+  await page.click('#theme-button'); // System → Light
+  await expect(lightMeta).toHaveAttribute('content', '#f5f5f5');
+  await expect(darkMeta).toHaveAttribute('content', '#f5f5f5');
+
+  await page.click('#theme-button'); // Light → Dark
+  await expect(lightMeta).toHaveAttribute('content', '#141414');
+  await expect(darkMeta).toHaveAttribute('content', '#141414');
+
+  await page.click('#theme-button'); // Dark → System
+  await expect(lightMeta).toHaveAttribute('content', '#f5f5f5');
+  await expect(darkMeta).toHaveAttribute('content', '#141414');
+});

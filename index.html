@@ -4,6 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Decision Matrix</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <meta name="theme-color" content="#f5f5f5" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#141414" media="(prefers-color-scheme: dark)" />
   <script>
     (function () {
       try {
@@ -227,6 +232,34 @@
         <label for="single-key-shortcuts-toggle">Single-key shortcuts</label>
       </div>
       <p class="settings-hint" id="single-key-shortcuts-hint">Shortcuts like 1–4, N, E, X and ?. Turn off if they clash with your screen reader or voice control.</p>
+    </section>
+
+    <section class="settings-section" aria-labelledby="settings-data-heading">
+      <h3 id="settings-data-heading">Data</h3>
+      <div class="data-actions" id="data-actions">
+        <div class="data-row">
+          <button type="button" id="export-button" class="secondary-button">Export file</button>
+          <button type="button" id="copy-button" class="secondary-button">Copy</button>
+        </div>
+        <div class="data-row">
+          <button type="button" id="import-button" class="secondary-button">Import file</button>
+          <button type="button" id="paste-button" class="secondary-button">Paste</button>
+        </div>
+      </div>
+      <div class="data-paste" id="paste-area" hidden>
+        <label for="paste-text">Paste your board here</label>
+        <textarea id="paste-text" rows="4" spellcheck="false"></textarea>
+        <button type="button" id="paste-import-button" class="secondary-button">Import pasted text</button>
+        <button type="button" id="paste-cancel-button" class="cancel-button">Cancel</button>
+      </div>
+      <input type="file" id="import-file" accept="application/json,.json" class="visually-hidden" tabindex="-1" aria-hidden="true" />
+      <div class="data-confirm" id="import-confirm" role="group" aria-labelledby="import-confirm-text" hidden>
+        <p id="import-confirm-text"></p>
+        <button type="button" id="import-confirm-button" class="secondary-button">Replace board</button>
+        <button type="button" id="import-cancel-button" class="cancel-button">Cancel</button>
+      </div>
+      <p class="settings-hint">Export file and Copy take all your tasks out as a file or as text on the clipboard. Import file and Paste replace this board with the tasks you bring in.</p>
+      <p class="settings-hint" id="data-status" role="status"></p>
     </section>
 
     <section class="settings-section" aria-labelledby="settings-shortcuts-heading">

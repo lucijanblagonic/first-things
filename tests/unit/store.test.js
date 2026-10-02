@@ -142,3 +142,103 @@ test('undo: a second delete clears the first undo slot', async () => {
   const titles = store.getState().tasks.map((t) => t.title);
   assert.deepEqual(titles, ['B']);
 });
+
+/** A memory adapter that records what it was asked to back up. */
+function createRecordingAdapter() {
+  const adapter = createMemoryAdapter();
+  /** @type {string[]} */
+  const backups = [];
+  return {
+    ...adapter,
+    async backup(raw) {
+      backups.push(raw);
+    },
+    backups,
+  };
+}
+
+function importedTask(overrides = {}) {
+  return {
+    id: 'imported-1',
+    title: 'Imported',
+    notes: '',
+    due: null,
+    quadrant: 'plan',
+    order: 1000,
+    createdAt: '2026-03-05T00:00:00.000Z',
+    updatedAt: '2026-03-05T00:00:00.000Z',
+    completedAt: null,
+    ...overrides,
+  };
+}
+
+test('replaceAll: swaps the tasks, notifies and saves only the new ones', async () => {
+  const adapter = createRecordingAdapter();
+  const store = createStore({ adapter, now: NOW });
+  await store.init();
+  store.dispatch('addTask', { title: 'Old task', quadrant: 'do' });
+  await new Promise((r) => setTimeout(r, 0));
+
+  let notified = 0;
+  store.subscribe(() => notified++);
+  const tasks = [importedTask(), importedTask({ id: 'imported-2', title: 'Second' })];
+  assert.equal(await store.replaceAll(tasks), true);
+  await new Promise((r) => setTimeout(r, 0));
+
+  assert.deepEqual(store.getState().tasks, tasks);
+  assert.ok(notified >= 1);
+  assert.deepEqual(JSON.parse(/** @type {string} */ (await adapter.load())).tasks, tasks);
+});
+
+test('replaceAll: backs up the previous board when it had tasks', async () => {
+  const adapter = createRecordingAdapter();
+  const store = createStore({ adapter, now: NOW });
+  await store.init();
+  store.dispatch('addTask', { title: 'Old task', quadrant: 'do' });
+
+  await store.replaceAll([importedTask()]);
+
+  assert.equal(adapter.backups.length, 1);
+  const backedUp = JSON.parse(adapter.backups[0]);
+  assert.equal(backedUp.tasks.length, 1);
+  assert.equal(backedUp.tasks[0].title, 'Old task');
+});
+
+test('replaceAll: does not back up an empty board', async () => {
+  const adapter = createRecordingAdapter();
+  const store = createStore({ adapter, now: NOW });
+  await store.init();
+
+  await store.replaceAll([importedTask()]);
+
+  assert.equal(adapter.backups.length, 0);
+});
+
+test('replaceAll: clears a pending undo', async () => {
+  const adapter = createRecordingAdapter();
+  const timers = createFakeTimers();
+  const store = createStore({ adapter, now: NOW, timers });
+  await store.init();
+  store.dispatch('addTask', { title: 'Soon deleted', quadrant: 'do' });
+  store.dispatch('deleteTask', { id: store.getState().tasks[0].id });
+  assert.equal(store.canUndo(), true);
+
+  await store.replaceAll([importedTask()]);
+
+  assert.equal(store.canUndo(), false);
+});
+
+test('replaceAll: refused when stored data is from a newer version', async () => {
+  const adapter = createRecordingAdapter();
+  const newerDoc = JSON.stringify({ version: 999, tasks: [] });
+  await adapter.save(newerDoc);
+  const store = createStore({ adapter, now: NOW });
+  await store.init();
+
+  assert.equal(await store.replaceAll([importedTask()]), false);
+  await new Promise((r) => setTimeout(r, 0));
+
+  assert.deepEqual(store.getState().tasks, []);
+  assert.equal(await adapter.load(), newerDoc);
+  assert.equal(adapter.backups.length, 0);
+});

@@ -12,6 +12,8 @@ by default:
 | 3        | bottom-right | Delegate  | Urgent but not important     |
 | 4        | bottom-left  | Eliminate | Not urgent and not important |
 
+**Live app:** https://lucijanblagonic.github.io/productivity-decision-matrix/
+
 Prefer the classic Eisenhower layout with **Do** in the top-left? Open
 **Settings** (gear icon, `?`, or `⌘/Ctrl + ,`) and set *Urgent column* to
 **Left**. Only the columns swap; the important row always stays on top, and
@@ -25,10 +27,26 @@ tooltip):
 - **Theme** (monitor / sun / moon): cycles System → Light → Dark. System
   follows your OS setting.
 - **Settings** (gear): *Layout* (urgent column right or left), *Keyboard*
-  (turn single-key shortcuts on or off), and a grouped *Shortcuts* reference.
+  (turn single-key shortcuts on or off), *Data* (Export file, Import file,
+  Copy and Paste, see [Back up or move your board](#back-up-or-move-your-board)),
+  and a grouped *Shortcuts* reference.
 
 It's a static site: no build step, no framework, no runtime dependencies.
 Data is stored in the browser only, via `localStorage`.
+
+## Install as an app
+
+The live app can be installed so it opens in its own window, like a native app:
+
+- **Chrome or Edge:** open the live URL and click the install icon in the
+  address bar.
+- **Safari on macOS:** File → Add to Dock.
+- **iPhone or iPad:** Share → Add to Home Screen.
+
+Once installed it works offline after the first visit, and new versions arrive
+automatically the next time it is opened online. On a desktop browser the
+installed app and the browser tab share the same board; on iOS the Home Screen
+app keeps its own board, separate from Safari's.
 
 ## Running locally
 
@@ -50,6 +68,9 @@ Then open http://localhost:4173/ in a browser.
 npm test           # unit tests (node:test) for src/core/*
 npm run test:e2e    # Playwright end-to-end tests (Chromium, Firefox, WebKit)
 ```
+
+The PNG icons in `icons/` are rendered from the SVGs next to them with
+`node scripts/render-icons.mjs` and committed; re-run it after editing an SVG.
 
 `test:e2e` starts its own local server automatically (see
 `playwright.config.js`), so you don't need `npm run serve` running first.
@@ -88,10 +109,35 @@ Tasks and preferences are stored in your browser's `localStorage`, scoped to
 this site's origin. This means:
 
 - Data is **per browser, per device** — there is no account or sync.
+- Everyone who opens the live URL gets their own separate, private board;
+  nobody can see anyone else's tasks.
+- The installed app and the browser tab on the same browser profile share the
+  same board.
 - Clearing your browser's site data for this page **deletes your tasks**.
 - Private/incognito windows and browsers with `localStorage` disabled fall
   back to in-memory storage for the session (with a banner warning that
   changes won't be saved).
+
+### Back up or move your board
+
+Settings → **Data** takes your tasks out and brings them back in:
+
+- **Export file** saves all tasks as a JSON file
+  (`decision-matrix-YYYY-MM-DD.json`). **Import file**, on any computer,
+  replaces that board with the file's tasks after a confirmation that shows
+  how many tasks will be replaced and how many will be loaded.
+- **Copy** and **Paste** do the same through the clipboard. With Apple's
+  Universal Clipboard that means Copy on an iPhone and Paste on a Mac (or the
+  other way round): both devices need to be signed in to the same Apple
+  account with Handoff on, and the paste has to happen within about two
+  minutes. If the browser won't let the app read the clipboard, a text field
+  appears to paste into instead.
+
+Import and Paste **replace** the board; they do not merge. Tasks only: theme,
+layout and shortcut preferences are not included. The board that was replaced
+is kept as a `decision-matrix:backup-…` entry in the browser's `localStorage`.
+Files or text that aren't a Decision Matrix board, or that come from a newer
+version of the app, are rejected and change nothing.
 
 Storage is implemented behind a small adapter interface
 (`src/core/storage/adapter.js`), so a future change could add a synced
