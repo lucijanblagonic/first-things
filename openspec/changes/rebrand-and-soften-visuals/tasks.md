@@ -18,4 +18,4 @@
 ## 3. Integration
 
 - [x] 3.1 Run `npm test` and `npm run test:e2e`; verify no failures in Chromium and WebKit locally
-- [ ] 3.2 Verify the Test workflow passes in all three browsers on the pull request
+- [x] 3.2 Verify the Test workflow passes in all three browsers on the pull request
