@@ -42,6 +42,18 @@ point. `tests/e2e/demo.spec.js` overrides it with an empty storage state to cove
 real first visit. *Alternative:* clearing in every spec — an init script would also
 run on reload and wipe state mid-test.
 
+### D5. Do as a raised card
+Tokens per theme: `--color-surface-flat` / `--color-border-flat` for the three flat
+quadrants, `--color-surface-do` and `--shadow-raised` for Do. In the light theme Do is
+white with a two-layer shadow over cards one step dimmer. Shadows barely register on
+a dark page, so in the dark theme Do is also a step lighter than the others. Border
+width is the same on all four, so nothing shifts. Task rows no longer paint their own
+background, and row hover is a translucent wash (`--color-hover-row`) so it shows on
+either surface. High contrast keeps outlines on every card and adds an inset line to
+Do on top of the shadow. *Alternatives shown to the user:* a thicker border darker
+or lighter than the focus ring, a filled "1" badge, and combinations; the raised card
+was chosen because it uses no outline and so cannot be confused with focus.
+
 ## Risks / Trade-offs
 
 - [Someone may not want example tasks] → three deletions, and they never return.

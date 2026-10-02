@@ -4,6 +4,10 @@
 
 - [x] 1.1 In `src/ui/task-item.js`, wrap the title and the due badge in a `.task-headline` row, keep the notes preview below it, and remove the meta row; in `styles/task.css`, add `.task-headline` (wrapping, baseline-aligned) and make the badge non-shrinking; verify the same-line test in `tests/e2e/demo.spec.js` and the overdue test in `tests/e2e/tasks.spec.js`
 
+## 1b. Do as a raised card
+
+- [x] 1b.1 In `styles/tokens.css`, add `--color-surface-flat`, `--color-border-flat`, `--color-surface-do`, `--shadow-raised` and `--color-hover-row` for both themes; in `styles/board.css`, make Do the raised card and the other quadrants flat, with High contrast keeping outlines; in `styles/task.css`, stop rows painting their own background and use the translucent hover; verify the raised-card test in `tests/e2e/appearance.spec.js` in both themes and that the axe scans in `tests/e2e/a11y.spec.js` still pass
+
 ## 2. Example tasks
 
 - [x] 2.1 Create `src/core/demo.js` exporting `createDemoTasks(now)` (three tasks: Do due yesterday, Plan due in seven days, Eliminate undated, each with notes) and add it to `PRECACHE_URLS` in `sw.js`; verify `tests/unit/demo.test.js` and the precache test pass with `npm test`

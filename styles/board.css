@@ -193,21 +193,30 @@ body {
   flex-direction: column;
   min-height: 0;
   min-width: 0;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  background: var(--color-surface-flat);
+  border: 1px solid var(--color-border-flat);
   border-radius: var(--radius-lg);
   padding: var(--space-4);
 }
 
-/* Do is emphasised by a stronger border colour at the same width as the
-   others, so its content lines up with its neighbours. */
+/* Do is the one raised card: the full surface colour and a shadow, while the
+   other three sit flat. No outline, so it can't be mistaken for focus, and
+   the same border width as the others, so its content lines up with theirs. */
 .quadrant-do {
   --quadrant-area: do;
-  border-color: var(--color-border-strong);
+  background: var(--color-surface-do);
+  border-color: var(--color-border);
+  box-shadow: var(--shadow-raised);
+}
+
+/* High contrast keeps every card outlined and adds weight to Do's border. */
+:root[data-contrast='high'] .quadrant {
+  border-color: var(--color-border);
 }
 
 :root[data-contrast='high'] .quadrant-do {
-  box-shadow: inset 0 0 0 1px var(--color-border-strong);
+  border-color: var(--color-border-strong);
+  box-shadow: inset 0 0 0 1px var(--color-border-strong), var(--shadow-raised);
 }
 
 .quadrant-plan {

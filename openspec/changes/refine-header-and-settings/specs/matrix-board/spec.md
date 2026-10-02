@@ -18,7 +18,7 @@ The system SHALL render exactly four quadrants in a 2×2 grid where the top row 
 
 #### Scenario: Most important quadrant is emphasised
 - **WHEN** the board is rendered in either layout direction
-- **THEN** the `do` quadrant is visually emphasised compared to the others using a heavier neutral border and title weight, not color
+- **THEN** the `do` quadrant is visually emphasised compared to the others as the one raised card (a shadow and a brighter surface, with the other three flat) and by title weight, not color and not an outline that could be mistaken for a focus indicator
 
 ### Requirement: Axis headers
 The system SHALL label the rows and columns so the meaning of each position is understandable without prior knowledge: an "Urgent" header above the urgent column and a "Not urgent" header above the other column (so their positions swap with the layout direction), an "Important" header beside the top row, and a "Not important" header beside the bottom row. Axis headers SHALL be rendered no smaller than task title text.

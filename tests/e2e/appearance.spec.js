@@ -179,6 +179,29 @@ test('Do is emphasised without shifting its content relative to its neighbour', 
   expect(widths[0]).toBe(widths[1]);
 });
 
+test('Do is a raised card and the other quadrants are flat, in both themes', async ({ page }) => {
+  for (const colorScheme of /** @type {const} */ (['light', 'dark'])) {
+    await page.emulateMedia({ colorScheme });
+    await page.goto('/');
+    const cards = await page.evaluate(() =>
+      ['do', 'plan', 'limit', 'drop'].map((id) => {
+        const style = getComputedStyle(/** @type {Element} */ (document.getElementById(`quadrant-${id}`)));
+        return { shadow: style.boxShadow, background: style.backgroundColor };
+      }),
+    );
+    const [doCard, ...others] = cards;
+    expect(doCard.shadow, colorScheme).not.toBe('none');
+    for (const other of others) {
+      expect(other.shadow, colorScheme).toBe('none');
+      expect(other.background, colorScheme).not.toBe(doCard.background);
+    }
+    // The raised look uses no outline, so it cannot read as a focus ring.
+    expect(
+      await page.locator('#quadrant-do').evaluate((el) => getComputedStyle(el).outlineStyle),
+    ).toBe('none');
+  }
+});
+
 test('the add button has no border by default and an outline in high contrast', async ({ page }) => {
   await page.goto('/');
   const borderColor = () =>
