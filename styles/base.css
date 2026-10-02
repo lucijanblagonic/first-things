@@ -90,15 +90,6 @@ a {
   outline-offset: 2px;
 }
 
-/* Text fields already have a border: draw the ring over it rather than
-   around it, so focus reads as one line, not two. */
-input[type='text']:focus-visible,
-input[type='date']:focus-visible,
-textarea:focus-visible,
-select:focus-visible {
-  outline-offset: -1px;
-}
-
 /* Checkboxes: drawn rather than native, so the box uses the same outline
    tokens as every other control instead of the browser's own dark border. */
 input[type='checkbox'] {

@@ -52,10 +52,17 @@
   color: var(--color-text-muted);
 }
 
-.task-notes-indicator {
-  display: inline-flex;
-  width: 14px;
-  height: 14px;
+/* First line of the notes, on one line under the title. */
+.task-notes-preview {
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.task-meta:empty {
+  display: none;
 }
 
 .task-due-badge {
@@ -108,10 +115,9 @@
   animation: task-moved 900ms ease-out;
 }
 
-/* Drag & drop insertion indicator (design D8): a bar with a dot at its start,
-   drawn between rows. The element itself takes no space (zero height, and a
-   negative margin that cancels the list gap it would add), so rows don't
-   jump as the bar moves. */
+/* Drag & drop insertion indicator (design D8): a thin bar drawn between rows.
+   The element itself takes no space (zero height, and a negative margin that
+   cancels the list gap it would add), so rows don't jump as the bar moves. */
 .drop-insertion-line {
   position: relative;
   flex: none;
@@ -125,27 +131,15 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: -1.5px;
-  height: 3px;
-  border-radius: 3px;
-  background: var(--color-text);
-}
-
-.drop-insertion-line::after {
-  content: '';
-  position: absolute;
-  left: -4px;
-  top: -4.5px;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--color-text);
+  top: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-focus);
 }
 
 /* The quadrant a dragged task would land in. */
 .quadrant-drag-over {
-  outline: 2px solid var(--color-focus);
-  outline-offset: -2px;
+  border-color: var(--color-border-strong);
   background: var(--color-drop-target);
 }
 

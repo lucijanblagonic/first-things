@@ -153,12 +153,12 @@ test('dragging shows where the task will land without shifting the rows', async 
     .evaluateAll((nodes) => nodes.map((node) => (node.matches('li') ? node.textContent?.trim()[0] : '|')));
   expect(order).toEqual(['A', '|', 'B', 'C']);
 
-  // The bar is drawn (3px tall, spanning the row) but takes no room.
+  // The bar is drawn (spanning the row) but takes no room.
   const bar = await line.evaluate((el) => {
     const style = getComputedStyle(el, '::before');
     return { height: parseFloat(style.height), width: parseFloat(style.width) };
   });
-  expect(bar.height).toBeGreaterThanOrEqual(3);
+  expect(bar.height).toBeGreaterThanOrEqual(2);
   expect(bar.width).toBeGreaterThan(100);
   expect(await tops()).toEqual(before);
 
@@ -243,4 +243,49 @@ test('checkboxes show their state in both themes', async ({ page }) => {
     expect(await background()).not.toBe(before);
     await box.uncheck();
   }
+});
+
+test('text fields and buttons show the same focus ring', async ({ page, browserName }) => {
+  await page.goto('/');
+  await page.click('#do-add-button');
+  await expect(page.locator('#do-add-input')).toBeFocused();
+  const ring = (/** @type {string} */ selector) =>
+    page.locator(selector).evaluate((el) => {
+      const style = getComputedStyle(el);
+      return [style.outlineStyle, style.outlineWidth, style.outlineOffset, style.outlineColor].join(' ');
+    });
+  const inputRing = await ring('#do-add-input');
+  expect(inputRing).toMatch(/^solid 2px 2px /);
+
+  // WebKit only tabs to buttons with the OS "Full Keyboard Access" setting on.
+  test.skip(browserName === 'webkit', 'WebKit excludes <button> from Tab order without Full Keyboard Access');
+  await page.keyboard.press('Tab');
+  await expect(page.locator('#do-add-form button[type="submit"]')).toBeFocused();
+  expect(await ring('#do-add-form button[type="submit"]')).toBe(inputRing);
+});
+
+test('the first line of a task\'s notes is shown under its title', async ({ page }) => {
+  await page.goto('/');
+  await addTask(page, 'do', 'With notes');
+  await addTask(page, 'do', 'Without notes');
+  await page.click('#do-list li .task-title >> nth=0');
+  await page.fill('#edit-notes', '\n  Ask Maria for the figures  \nSecond line stays hidden');
+  await page.click('#edit-save-button');
+
+  const withNotes = page.locator('#do-list li', { hasText: 'With notes' });
+  await expect(withNotes.locator('.task-notes-preview')).toHaveText('Ask Maria for the figures');
+  await expect(withNotes).not.toContainText('Second line');
+  await expect(page.locator('#do-list li', { hasText: 'Without notes' }).locator('.task-notes-preview')).toHaveCount(0);
+
+  // Weaker than the title: smaller, in the muted colour, and never wraps.
+  const styles = await withNotes.evaluate((li) => {
+    const title = getComputedStyle(/** @type {Element} */ (li.querySelector('.task-title')));
+    const preview = getComputedStyle(/** @type {Element} */ (li.querySelector('.task-notes-preview')));
+    return {
+      smaller: parseFloat(preview.fontSize) < parseFloat(title.fontSize),
+      differentColor: preview.color !== title.color,
+      whiteSpace: preview.whiteSpace,
+    };
+  });
+  expect(styles).toEqual({ smaller: true, differentColor: true, whiteSpace: 'nowrap' });
 });

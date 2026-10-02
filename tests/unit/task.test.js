@@ -70,3 +70,12 @@ test('createTask generates unique ids', () => {
   const b = createTask({ title: 'B', quadrant: 'do', order: 2000 }, now);
   assert.notEqual(a.id, b.id);
 });
+
+test('notesPreview returns the first non-blank line, trimmed', async () => {
+  const { notesPreview } = await import('../../src/core/task.js');
+  assert.equal(notesPreview(''), '');
+  assert.equal(notesPreview('   \n\t\n'), '');
+  assert.equal(notesPreview('One line'), 'One line');
+  assert.equal(notesPreview('First\nSecond'), 'First');
+  assert.equal(notesPreview('\n\n  Indented first  \nSecond'), 'Indented first');
+});

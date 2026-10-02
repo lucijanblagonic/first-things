@@ -26,15 +26,15 @@ The app SHALL offer two strengths of outline styling in both themes: a default w
 - **THEN** the softer look is used, also after a reload
 
 ### Requirement: Focus indicators are fully visible
-The focus indicator of every focusable element SHALL be visible on all sides and SHALL NOT be cut off by a scrolling or clipping container. A focused text field SHALL show a single focus line rather than its border plus a separate ring. Showing focus or emphasis SHALL NOT move surrounding content.
+The focus indicator of every focusable element SHALL be visible on all sides and SHALL NOT be cut off by a scrolling or clipping container. Text fields and buttons SHALL show the same focus ring, so focus looks the same on every control. Showing focus or emphasis SHALL NOT move surrounding content.
 
 #### Scenario: Focused task row
 - **WHEN** a task row receives keyboard focus
 - **THEN** the focus ring is visible on all four sides of the row
 
 #### Scenario: Focused text field
-- **WHEN** the add-task input receives focus
-- **THEN** one focus line is shown around the field
+- **WHEN** the add-task input receives focus and focus then moves to the Add button next to it
+- **THEN** both show a ring of the same width, offset and colour
 
 #### Scenario: Emphasised quadrant stays aligned
 - **WHEN** the board is shown on a wide viewport

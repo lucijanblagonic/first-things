@@ -21,6 +21,9 @@
 - [x] 3.2 In `src/main.js` and `src/ui/dnd.js`, highlight a task's row after a keyboard move or a drop, but not when a reorder at the edge moves nothing; verify the keyboard-move test in `tests/e2e/appearance.spec.js`
 - [x] 3.3 In `styles/board.css`, lay the add form out on one line at the same height and position as the "Add task" button, with the validation message wrapping below; verify the two add-form tests in `tests/e2e/appearance.spec.js` (desktop and 375px)
 
+- [x] 3.4 Add `notesPreview` to `src/core/task.js` with a unit test, render it in `src/ui/task-item.js` in place of the notes icon, and style `.task-notes-preview` in `styles/task.css`; verify the notes test in `tests/e2e/appearance.spec.js` and `npm test`
+- [x] 3.5 Tone the drop indicator down to a 2px bar in the focus colour and drop the ring on the target quadrant; give text fields the same focus ring as buttons by removing the text-field offset in `styles/base.css`; verify the drag and focus-ring tests in `tests/e2e/appearance.spec.js`
+
 ## 4. Integration
 
 - [x] 4.1 Run `npm test` and `npm run test:e2e`; verify no failures in Chromium and WebKit locally

@@ -21,13 +21,14 @@ heading.
   lighter keycaps, a borderless "Add task" button, drawn checkboxes that use the same
   tokens as other controls, quieter axis labels, hover shown as a background rather
   than a border.
-- Fixes: the focus ring on a task row is no longer clipped; text fields show one
-  focus line instead of two; the Do quadrant is emphasised without shifting its
+- Fixes: the focus ring on a task row is no longer clipped; text fields and buttons show the same focus ring; the Do quadrant is emphasised without shifting its
   content; task rows and the "Add task" label line up with the quadrant heading;
   rows are tighter.
 - Moving a task is easier to follow: while dragging, a bar with a dot shows exactly
   where the task will land (without shifting the rows) and the target quadrant is
   tinted; after a move by drag or keyboard, the task's row is briefly highlighted.
+- A task with notes shows the first line of them under its title in weaker text,
+  instead of a notes icon.
 - The add form is a single line (input, Add, Cancel) the same height and position as
   the "Add task" button it replaces, so opening it does not move anything.
 - New **High contrast** setting (Settings → Appearance) that brings back the
@@ -41,8 +42,9 @@ heading.
 None.
 
 ### Modified Capabilities
-- `task-management`: adds a requirement that moving a task shows where it will land
-  and where it landed.
+- `task-management`: adds requirements that moving a task shows where it will land
+  and where it landed, that notes are previewed under the title, and that the add
+  form takes the place of the add button.
 - `theming`: adds a contrast preference (soft by default, High contrast on request
   or by OS preference) and a requirement that focus indicators are fully visible.
 

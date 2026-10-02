@@ -48,3 +48,16 @@ export function createTask({ title, quadrant, notes = '', due = null, order }, n
     completedAt: null,
   };
 }
+
+/**
+ * The first non-blank line of a task's notes, for showing under its title.
+ * @param {string} notes
+ * @returns {string} empty when there is nothing to show
+ */
+export function notesPreview(notes) {
+  for (const line of notes.split('\n')) {
+    const trimmed = line.trim();
+    if (trimmed) return trimmed;
+  }
+  return '';
+}

@@ -32,8 +32,9 @@ on `<html>`, applied by the inline head script and by `setHighContrast()` in
 preference; with nothing stored, the head script uses `prefers-contrast: more`.
 
 ### D3. Focus ring
-2px ring in `--color-focus` (mid grey by default, 4.7:1 on white). Text fields use
-`outline-offset: -1px` so the ring replaces the border visually. Task rows use
+2px ring in `--color-focus` (mid grey by default, 4.7:1 on white), offset 2px, the
+same on text fields and buttons (an earlier draft drew the ring over a text field's
+border; it read as inconsistent next to the buttons beside it). Task rows use
 `outline-offset: -2px` because their list scrolls and would clip an outer ring. The
 global `border-radius` override on `:focus-visible` is removed; it changed elements'
 corner radius while focused.
@@ -64,9 +65,10 @@ layout). Icons use a 22-unit stroke on the 512 grid so the outlines survive at
 
 ### D9. Move feedback
 Drag: the existing insertion element becomes zero-height with a negative block margin
-that cancels the list gap, and draws a 3px bar with a 9px dot via pseudo-elements, so
-rows keep their positions while it moves. The target quadrant gets a solid ring and a
-faint tint instead of a dashed outline. After any move (drop, `Ctrl/⌘ + arrows`,
+that cancels the list gap, and draws a 2px bar in the focus colour via a
+pseudo-element, so rows keep their positions while it moves. The target quadrant gets
+a faint tint and the stronger border colour instead of a dashed outline (a heavier
+bar with a dot and a ring around the quadrant was tried and was too loud). After any move (drop, `Ctrl/⌘ + arrows`,
 `Shift + 1–4`), `flashMoved()` in `src/main.js` adds `task-moved` to the row, a 900ms
 background fade. Rows are rebuilt on each render, so the class needs no cleanup. A
 keyboard reorder at the top or bottom edge moves nothing and does not highlight.
@@ -79,6 +81,12 @@ the row.
 bleeds left: its box starts at the content edge like the input, so its label sits
 where typed text will. The validation message has `order: 1` and full width, so it
 wraps onto its own line below. The input keeps a 16px font so iOS does not zoom.
+
+### D11. Notes preview replaces the notes icon
+`notesPreview(notes)` in `src/core/task.js` returns the first non-blank line, trimmed.
+`src/ui/task-item.js` renders it as `.task-notes-preview` under the title (muted,
+0.8rem, one line with ellipsis) and no longer renders the notes icon. The row's
+accessible name still says "has notes".
 
 ## Risks / Trade-offs
 

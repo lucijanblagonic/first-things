@@ -5,6 +5,7 @@
  */
 
 import { dueStatus } from '../core/selectors.js';
+import { notesPreview } from '../core/task.js';
 
 /**
  * @param {string} iso YYYY-MM-DD
@@ -14,24 +15,6 @@ function formatDue(iso) {
   const [year, month, day] = iso.split('-').map(Number);
   const date = new Date(year, month - 1, day);
   return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-}
-
-const SVG_NS = 'http://www.w3.org/2000/svg';
-
-/** @returns {SVGSVGElement} a monochrome "text lines" glyph drawn in currentColor */
-function notesIcon() {
-  const svg = document.createElementNS(SVG_NS, 'svg');
-  svg.setAttribute('viewBox', '0 0 16 16');
-  svg.setAttribute('width', '14');
-  svg.setAttribute('height', '14');
-  svg.setAttribute('fill', 'none');
-  svg.setAttribute('stroke', 'currentColor');
-  svg.setAttribute('stroke-width', '1.5');
-  svg.setAttribute('stroke-linecap', 'round');
-  const path = document.createElementNS(SVG_NS, 'path');
-  path.setAttribute('d', 'M3 4h10M3 8h10M3 12h6');
-  svg.append(path);
-  return svg;
 }
 
 /**
@@ -87,19 +70,16 @@ export function buildTaskItem(task, now) {
   title.textContent = task.title;
   main.append(title);
 
+  const preview = notesPreview(task.notes);
+  if (preview) {
+    const notes = document.createElement('span');
+    notes.className = 'task-notes-preview';
+    notes.textContent = preview;
+    main.append(notes);
+  }
+
   const meta = document.createElement('div');
   meta.className = 'task-meta';
-
-  if (task.notes) {
-    const notesBadge = document.createElement('span');
-    notesBadge.className = 'task-notes-indicator';
-    notesBadge.setAttribute('aria-hidden', 'true');
-    notesBadge.append(notesIcon());
-    const notesLabel = document.createElement('span');
-    notesLabel.className = 'visually-hidden';
-    notesLabel.textContent = 'Has notes';
-    meta.append(notesBadge, notesLabel);
-  }
 
   if (task.due) {
     const status = dueStatus(task, now);

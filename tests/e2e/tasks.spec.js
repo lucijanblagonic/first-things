@@ -54,7 +54,7 @@ test('edit all fields of a task', async ({ page }) => {
   await expect(page.locator('#edit-dialog')).toBeHidden();
   await expect(page.locator('#do-list li')).toHaveCount(0);
   await expect(page.locator('#plan-list li .task-title')).toHaveText('New title');
-  await expect(page.locator('#plan-list li .task-notes-indicator')).toBeVisible();
+  await expect(page.locator('#plan-list li .task-notes-preview')).toBeVisible();
 });
 
 test('cancel edit discards changes', async ({ page }) => {
