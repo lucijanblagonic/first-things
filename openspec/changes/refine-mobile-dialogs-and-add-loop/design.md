@@ -65,6 +65,25 @@ buttons too.
 and `--shadow-raised`. Row hover and the drop-target tint were already translucent
 washes, so they work on the page background.
 
+### D9. One button system
+`styles/base.css` defines `.button` plus `.button-primary`, `.button-outline` and
+`.button-basic`; height comes from `--button-height` (32px on the board, 36px in
+dialogs, 44px in the phone sheet). The per-context rules (`.dialog-actions button`,
+`.add-form-actions button`, `.data-row button`, `.toast-undo-button`,
+`.secondary-button`) are removed; existing classes and ids stay as hooks. Outline
+uses the strong border token so the boundary keeps 3:1; the toast's Undo is basic
+rather than outline so the toast stays quiet.
+
+### D10. Dialog dividers removed
+The borders on `.settings-section`, between `.shortcut-group`s and on the phone
+sheet's pinned heading and action bar are removed; spacing separates them.
+
+### D11. Install icons
+`icons/apple-touch-icon.png` is rendered from a square source without transparency
+(iOS rounds corners itself and paints transparency black). The manifest no longer
+lists the SVG: with `sizes: "any"` an installer may select it as the largest icon
+and fail to draw it. The SVG remains the browser-tab icon.
+
 ## Risks / Trade-offs
 
 - [Visual viewport behaviour differs between iOS versions and browsers] → CSS

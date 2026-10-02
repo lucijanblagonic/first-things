@@ -15,6 +15,12 @@
 - [x] 3.3 In `styles/dialog.css`, add the scroll lock and, below 768px, the full-screen sheet with pinned heading and edit actions and 44px buttons; verify the edit-dialog, Settings, scroll-lock and visible-viewport tests in `tests/e2e/mobile.spec.js`
 - [x] 3.4 In `src/ui/dialogs.js` and `index.html`, focus the heading instead of the title field when the primary pointer is coarse; verify the touch test in `tests/e2e/mobile.spec.js` (Chromium) and that the existing desktop edit tests still pass
 
+## 3b. Buttons, dividers, icons
+
+- [x] 3b.1 In `styles/base.css`, define `.button`, `.button-primary`, `.button-outline` and `.button-basic`; apply them to every text button in `index.html` and to the toast's Undo in `src/ui/toast.js`; remove the per-context button rules from `styles/dialog.css` and `styles/board.css`; verify the button census and button-look tests in `tests/e2e/appearance.spec.js`
+- [x] 3b.2 In `styles/dialog.css`, remove the divider borders from Settings sections, shortcut groups and the phone sheet's heading and actions; verify the no-divider tests in `tests/e2e/appearance.spec.js` and `tests/e2e/mobile.spec.js`
+- [x] 3b.3 Render `icons/apple-touch-icon.png` from a new square, opaque `icons/icon-square.svg`, remove the SVG entry from `manifest.webmanifest`, and add the Apple title meta to `index.html`; verify the icon test in `tests/e2e/pwa.spec.js`
+
 ## 4. Integration
 
 - [x] 4.1 Run `npm test` and `npm run test:e2e`; verify no failures in Chromium and WebKit locally

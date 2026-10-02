@@ -29,7 +29,7 @@
 }
 
 /* On inverted (primary) buttons the keycap follows the button's text color. */
-.dialog-actions button[type='submit'] .kbd {
+.button-primary .kbd {
   border-color: color-mix(in srgb, currentColor 45%, transparent);
   background: transparent;
   color: inherit;
