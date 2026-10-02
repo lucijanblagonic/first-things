@@ -30,7 +30,7 @@
 - [x] 4.6 Add to `tests/e2e/pwa.spec.js` a test "service worker registers and controls the page": go to `/`, `await page.evaluate(() => navigator.serviceWorker.ready.then(() => true))`, reload, and assert `await page.evaluate(() => navigator.serviceWorker.controller !== null)` is true. Skip in WebKit if Playwright's WebKit build reports no `serviceWorker` in `navigator`. Verify `npx playwright test tests/e2e/pwa.spec.js` passes
 - [x] 4.7 Add to `tests/e2e/pwa.spec.js` a test "works offline after the first visit", Chromium only (`test.skip(({ browserName }) => browserName !== 'chromium')`): go to `/`, wait for `navigator.serviceWorker.ready`, add a task through the UI the same way `tests/e2e/tasks.spec.js` does, call `context.setOffline(true)`, reload, and assert the four quadrant regions are visible and the task title is shown; then add a second task, reload while still offline, and assert both tasks are shown. Verify `npx playwright test tests/e2e/pwa.spec.js --project=chromium` passes
 - [x] 4.8 Add to `tests/e2e/pwa.spec.js` a test "a changed file is served on the next online load", Chromium only: go to `/`, wait for `navigator.serviceWorker.ready` and reload so the page is controlled; then simulate an outdated cache inside `page.evaluate`: open the `decision-matrix-v1` cache and `put` `new Response('/* stale */', { headers: { 'Content-Type': 'text/css' } })` under `styles/base.css`; then `fetch('styles/base.css')` from the page (this goes through the service worker) and assert the text is not `/* stale */`; finally assert `caches.match('styles/base.css')` text is no longer `/* stale */` either, proving an online load gets the server's version and refreshes the cache. Verify `npx playwright test tests/e2e/pwa.spec.js --project=chromium` passes
-- [ ] 4.9 Run the full suites: verify `npm test` and `npm run test:e2e` both pass with no failures in any browser
+- [x] 4.9 Run the full suites: verify `npm test` and `npm run test:e2e` both pass with no failures in any browser
 
 ## 5. Export and import
 
@@ -51,7 +51,7 @@
 - [x] 5.15 In `tests/e2e/a11y.spec.js`, extend the existing "settings dialog has no automated a11y violations" test (or add a sibling test) so the axe scan also runs while the import confirmation is showing (set a valid file on `#import-file` first) and while the paste field is showing (stub `navigator.clipboard.readText` to reject, then click `#paste-button`). Verify `npx playwright test tests/e2e/a11y.spec.js` passes
 - [x] 5.16 Add `'src/core/transfer.js'` and `'src/ui/data-transfer.js'` to `PRECACHE_URLS` in `sw.js`. Verify `npm test` passes (the precache test from 4.4 fails without this)
 - [x] 5.17 In `README.md` "## Data storage", add a short "### Back up or move your board" subsection: Settings → Data → Export file saves a JSON file; Import file on any computer replaces that board with the file after a confirmation; Copy and Paste do the same through the clipboard, which with Apple's Universal Clipboard means copying on an iPhone and pasting on a Mac (both signed in to the same Apple account with Handoff on, within about two minutes), and if the browser will not read the clipboard a paste field appears instead; tasks only, preferences are not included; the previous board is kept as a backup entry in browser storage. Also add Export file / Import file / Copy / Paste to the "## Header and Settings" list of what Settings contains. Verify both edits render correctly in a Markdown preview
-- [ ] 5.18 Run the full suites: verify `npm test` and `npm run test:e2e` both pass with no failures in any browser
+- [x] 5.18 Run the full suites: verify `npm test` and `npm run test:e2e` both pass with no failures in any browser
 
 ## 6. Deploy workflow and documentation
 
@@ -64,7 +64,7 @@
 ## 7. Go live
 
 - [ ] 7.1 Pre-flight before going public: run a secret scan over the full history (`git log -p --all` searched for key/token/password patterns) and list author emails with `git log --all --format='%an <%ae>' | sort -u`. Report the result to the user and stop if any secret is found or if the author email is one the user does not want public (design Risks)
-- [ ] 7.2 Commit the change on `feat/hosting-and-pwa` with a conventional commit message, push the branch, and verify the Test workflow passes for it
+- [x] 7.2 Commit the change on `feat/hosting-and-pwa` with a conventional commit message, push the branch, and verify the Test workflow passes for it
 - [ ] 7.3 Make the repository public with `gh repo edit lucijanblagonic/productivity-decision-matrix --visibility public --accept-visibility-change-consequences`; verify `gh repo view --json visibility` reports `PUBLIC`
 - [ ] 7.4 Enable Pages with GitHub Actions as the source: `gh api -X POST repos/lucijanblagonic/productivity-decision-matrix/pages -f build_type=workflow`; verify `gh api repos/lucijanblagonic/productivity-decision-matrix/pages --jq .build_type` prints `workflow`
 - [ ] 7.5 Merge `feat/hosting-and-pwa` into `main` (fast-forward) and push; verify with `gh run list --limit 4` that both "Deploy to GitHub Pages" and "Test" complete with `success`
