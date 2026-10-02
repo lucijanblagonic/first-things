@@ -127,7 +127,8 @@ chrome and stays out of the `theming` spec.
 opts in with `test.use({ serviceWorkers: 'allow' })`. This keeps the existing specs
 deterministic. The offline-reload test runs in Chromium only
 (`context.setOffline(true)` with service workers is not reliable in Playwright's
-Firefox and WebKit); manifest and registration tests run in all three.
+Firefox and WebKit); the manifest tests run in all three, and the registration
+test in Chromium and Firefox (WebKit's worker activation proved flaky on Linux CI).
 
 ### D10. Export file is the stored document plus a timestamp
 `{ "version": 1, "exportedAt": "<ISO timestamp>", "tasks": [...] }`. `validate()`
