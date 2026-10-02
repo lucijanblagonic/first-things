@@ -1,4 +1,8 @@
 .task-item {
+  /* Height of a row's first line. The checkbox, the title's first line and
+     the delete button are each centred within it, so a one-line task sits in
+     the middle of its hover/focus box and a multi-line one stays top-aligned. */
+  --task-line: 24px;
   display: flex;
   align-items: flex-start;
   gap: var(--space-2);
@@ -21,8 +25,9 @@
   opacity: 0.4;
 }
 
-.task-checkbox {
-  margin-top: 2px;
+/* Two classes: must outweigh the base checkbox rule's `margin: 0`. */
+.task-item .task-checkbox {
+  margin-top: calc((var(--task-line) - 18px) / 2);
 }
 
 .task-main {
@@ -31,6 +36,9 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  /* Pads the title's line box (font size × the inherited 1.4 line height)
+     out to --task-line. */
+  padding-block: calc((var(--task-line) - var(--font-size-task) * 1.4) / 2);
 }
 
 /* Title with its due date right after it; a long title wraps and the date
@@ -88,8 +96,8 @@
 
 .task-delete-button {
   flex-shrink: 0;
-  width: 24px;
-  height: 24px;
+  width: var(--task-line);
+  height: var(--task-line);
   display: flex;
   align-items: center;
   justify-content: center;

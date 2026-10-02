@@ -361,3 +361,41 @@ test('the first line of a task\'s notes is shown under its title', async ({ page
   });
   expect(styles).toEqual({ smaller: true, differentColor: true, whiteSpace: 'nowrap' });
 });
+
+test('a task row\'s checkbox, title and delete button are vertically centred in the row', async ({ page }) => {
+  await page.goto('/');
+  await addTask(page, 'do', 'One line');
+  await addTask(page, 'do', 'Two lines');
+  await page.click('#do-list li .task-title >> nth=1');
+  await page.fill('#edit-notes', 'A line of notes');
+  await page.click('#edit-save-button');
+
+  const measure = (/** @type {number} */ index) =>
+    page
+      .locator('#do-list li')
+      .nth(index)
+      .evaluate((li) => {
+        const row = li.getBoundingClientRect();
+        const centre = (/** @type {DOMRect} */ box) => box.top + box.height / 2 - row.top;
+        const select = (/** @type {string} */ selector) => /** @type {Element} */ (li.querySelector(selector));
+        return {
+          row: row.height / 2,
+          checkbox: centre(select('input[type="checkbox"]').getBoundingClientRect()),
+          title: centre(select('.task-title').getBoundingClientRect()),
+          remove: centre(select('.task-delete-button').getBoundingClientRect()),
+        };
+      });
+
+  // One-line task: everything on the row's centre line.
+  const single = await measure(0);
+  for (const part of /** @type {const} */ (['checkbox', 'title', 'remove'])) {
+    expect(Math.abs(single[part] - single.row), part).toBeLessThanOrEqual(0.75);
+  }
+
+  // Task with notes: checkbox and delete button stay level with the title's line.
+  const double = await measure(1);
+  expect(Math.abs(double.checkbox - double.title)).toBeLessThanOrEqual(0.75);
+  expect(Math.abs(double.remove - double.title)).toBeLessThanOrEqual(0.75);
+  expect(double.title).toBeLessThan(double.row);
+});
+
