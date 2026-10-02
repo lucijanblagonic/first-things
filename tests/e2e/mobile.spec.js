@@ -67,6 +67,29 @@ test('the edit dialog fills the screen with its heading and actions pinned', asy
   }
   const save = await page.locator('#edit-save-button').boundingBox();
   expect(save?.height).toBeGreaterThanOrEqual(44);
+
+  // Nothing is pushed off the side: the sheet has no horizontal overflow.
+  expect(await dialog.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true);
+});
+
+test('the edit actions fit a narrow phone even with the widest shortcut labels', async ({ page }) => {
+  // Non-Apple platforms label Save's shortcut "Ctrl" + "Enter", the widest pair.
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'platform', { get: () => 'Linux x86_64' });
+    Object.defineProperty(navigator, 'userAgentData', { get: () => undefined });
+    Object.defineProperty(navigator, 'userAgent', {
+      get: () => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36',
+    });
+  });
+  await page.setViewportSize({ width: 320, height: 568 });
+  await seedTask(page, 'Narrow');
+  await page.goto('/');
+  await page.click('#do-list li .task-title');
+  await expect(page.locator('#edit-dialog')).toBeVisible();
+  for (const selector of ['#edit-delete-button', '#edit-cancel-button', '#edit-save-button']) {
+    await expect(page.locator(selector), selector).toBeInViewport({ ratio: 1 });
+  }
+  expect(await page.locator('#edit-dialog').evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true);
 });
 
 test('the page behind an open dialog does not scroll', async ({ page }) => {

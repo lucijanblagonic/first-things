@@ -34,7 +34,9 @@ asks Chrome on Android to resize the layout viewport as well. Without
 ### D3. Pinned heading and actions
 `position: sticky` inside the scrolling dialog: the heading at `top: 0`, the edit
 dialog's `.dialog-actions` at `bottom: 0`, each with the dialog's background and a
-divider. DOM and tab order are unchanged.
+divider. DOM and tab order are unchanged. The keycap hints inside the edit actions
+are hidden at this size: with them, the three buttons were wider than a phone screen
+on non-Apple platforms ("Ctrl" + "Enter"), pushing Save partly off the edge.
 
 ### D4. Focus on open by pointer type
 `(pointer: coarse)` → focus the heading (`tabindex="-1"`, no ring) instead of the

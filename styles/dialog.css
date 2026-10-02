@@ -482,6 +482,13 @@ dialog {
     border-top: 1px solid var(--color-divider);
   }
 
+  /* Three buttons with their keycaps don't fit a phone's width (the
+     non-Apple "Ctrl" + "Enter" pair is the widest), which pushed Save off
+     the edge. The shortcuts still work and are listed in Settings. */
+  #edit-form .dialog-actions .kbd-group {
+    display: none;
+  }
+
   /* Comfortable touch targets for the sheet's buttons. */
   .dialog-actions button,
   .data-row button,
