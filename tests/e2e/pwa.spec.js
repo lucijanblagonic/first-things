@@ -53,6 +53,34 @@ test('page links a favicon and an apple touch icon that load', async ({ page }) 
   }
 });
 
+test('install icons are PNGs, and the Apple icon is square and opaque', async ({ page }) => {
+  await page.goto('/');
+  const manifestHref = await page.locator('link[rel="manifest"]').getAttribute('href');
+  const manifest = await (await page.request.get(new URL(/** @type {string} */ (manifestHref), page.url()).href)).json();
+  // An SVG entry can be picked as the "largest" icon by installers that then
+  // cannot draw it, leaving the installed app without an icon.
+  for (const icon of manifest.icons) expect(icon.type, icon.src).toBe('image/png');
+
+  const link = page.locator('link[rel="apple-touch-icon"]');
+  await expect(link).toHaveAttribute('sizes', '180x180');
+  const href = /** @type {string} */ (await link.getAttribute('href'));
+  const corner = await page.evaluate(async (src) => {
+    const image = new Image();
+    image.src = src;
+    await image.decode();
+    const canvas = document.createElement('canvas');
+    canvas.width = image.naturalWidth;
+    canvas.height = image.naturalHeight;
+    const context = /** @type {CanvasRenderingContext2D} */ (canvas.getContext('2d'));
+    context.drawImage(image, 0, 0);
+    return { width: image.naturalWidth, height: image.naturalHeight, alpha: context.getImageData(0, 0, 1, 1).data[3] };
+  }, href);
+  // iOS rounds the corners itself and paints transparency black, so the
+  // source must be a full, opaque square.
+  expect(corner).toEqual({ width: 180, height: 180, alpha: 255 });
+  await expect(page.locator('meta[name="apple-mobile-web-app-title"]')).toHaveAttribute('content', 'First Things');
+});
+
 test('service worker registers and controls the page', async ({ page, browserName }) => {
   // Playwright's WebKit build intermittently never resolves
   // navigator.serviceWorker.ready on Linux CI, so it is left out here.

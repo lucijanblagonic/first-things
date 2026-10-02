@@ -19,6 +19,7 @@ const PRECACHE_URLS = [
   'icons/icon-512.png',
   'icons/icon-maskable-512.png',
   'icons/icon-maskable.svg',
+  'icons/icon-square.svg',
   'icons/icon.svg',
   'src/core/actions.js',
   'src/core/dates.js',
