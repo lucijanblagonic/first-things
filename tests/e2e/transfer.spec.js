@@ -84,7 +84,7 @@ test('export downloads the board as a dated JSON file', async ({ page }) => {
 
   const [download] = await Promise.all([page.waitForEvent('download'), page.click('#export-button')]);
 
-  expect(download.suggestedFilename()).toMatch(/^decision-matrix-\d{4}-\d{2}-\d{2}\.json$/);
+  expect(download.suggestedFilename()).toMatch(/^first-things-\d{4}-\d{2}-\d{2}\.json$/);
   const doc = JSON.parse(await readFile(await download.path(), 'utf8'));
   expect(doc.version).toBe(1);
   expect(doc.tasks.map((/** @type {{ title: string }} */ t) => t.title).sort()).toEqual(['First', 'Second']);
@@ -166,7 +166,7 @@ test('a file that is not a board is rejected', async ({ page }) => {
 
   await page.setInputFiles('#import-file', jsonFile('hello'));
 
-  await expect(page.locator('#data-status')).toContainText('not a Decision Matrix export');
+  await expect(page.locator('#data-status')).toContainText('not a First Things export');
   await expect(page.locator('#import-confirm')).toBeHidden();
   await expect(page.locator('#do-list li .task-title')).toHaveText('Original');
 });
@@ -262,7 +262,7 @@ test('pasting a clipboard that does not hold a board is rejected', async ({ page
 
   await page.click('#paste-button');
 
-  await expect(page.locator('#data-status')).toContainText('does not contain a Decision Matrix board');
+  await expect(page.locator('#data-status')).toContainText('does not contain a First Things board');
   await expect(page.locator('#import-confirm')).toBeHidden();
   await expect(page.locator('#paste-area')).toBeHidden();
   await expect(page.locator('#do-list li .task-title')).toHaveText('Original');
@@ -299,7 +299,7 @@ test('the paste field rejects text that is not a board', async ({ page }) => {
   await page.fill('#paste-text', 'hello');
   await page.click('#paste-import-button');
 
-  await expect(page.locator('#data-status')).toContainText('not a Decision Matrix board');
+  await expect(page.locator('#data-status')).toContainText('not a First Things board');
   await expect(page.locator('#paste-area')).toBeHidden();
   await expect(page.locator('#data-actions')).toBeVisible();
   await expect(page.locator('#do-list li .task-title')).toHaveText('Original');

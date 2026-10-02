@@ -24,6 +24,9 @@ body {
 }
 
 .app-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
   margin: 0;
   font-size: var(--font-size-app-title);
   font-weight: 750;
@@ -35,6 +38,12 @@ body {
   .app-title {
     font-size: 1.6rem;
   }
+}
+
+.app-logo {
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
 }
 
 .app-header-controls {
@@ -121,7 +130,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text);
+  color: var(--color-text-muted);
   font-size: var(--font-size-axis);
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -189,9 +198,15 @@ body {
   padding: var(--space-4);
 }
 
+/* Do is emphasised by a stronger border colour at the same width as the
+   others, so its content lines up with its neighbours. */
 .quadrant-do {
   --quadrant-area: do;
-  border: 2px solid var(--color-border-strong);
+  border-color: var(--color-border-strong);
+}
+
+:root[data-contrast='high'] .quadrant-do {
+  box-shadow: inset 0 0 0 1px var(--color-border-strong);
 }
 
 .quadrant-plan {
@@ -246,7 +261,11 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 2px;
+  /* Rows bleed into the quadrant's padding by their own inline padding, so
+     checkboxes line up with the heading while hover and focus still get a
+     full-width row. */
+  margin: 0 calc(-1 * var(--space-2));
   padding: var(--space-1) 0;
   scrollbar-color: var(--color-scrollbar) transparent;
 }
@@ -263,18 +282,27 @@ body {
   align-items: center;
   align-self: flex-start;
   margin-top: var(--space-2);
+  /* Borderless: pulled left by its own padding so the label lines up with
+     the heading and the task rows. */
+  margin-left: calc(-1 * var(--space-2));
   background: none;
-  border: 1px dashed var(--color-border-strong);
+  border: 1px solid transparent;
   border-radius: var(--radius-sm);
-  color: var(--color-text);
+  color: var(--color-text-muted);
   padding: var(--space-1) var(--space-2);
   font-size: var(--font-size-meta);
-  min-height: 24px;
+  min-height: 28px;
 }
 
 .add-task-button:hover {
-  border-style: solid;
   background: var(--color-hover);
+  color: var(--color-text);
+}
+
+:root[data-contrast='high'] .add-task-button {
+  margin-left: 0;
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
 }
 
 .add-form {
@@ -328,10 +356,10 @@ body {
 }
 
 .archived-list {
-  margin-top: var(--space-1);
+  margin: var(--space-1) calc(-1 * var(--space-2)) 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 2px;
   max-height: 12rem;
   overflow-y: auto;
 }

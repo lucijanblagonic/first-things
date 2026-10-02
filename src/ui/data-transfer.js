@@ -109,7 +109,7 @@ export function initDataTransfer({ store, now }) {
     const { tasks } = store.getState();
     try {
       await navigator.clipboard.writeText(serializeExport(tasks, now()));
-      setStatus(`Copied ${taskCount(tasks.length)}. Paste them into Decision Matrix on your other device.`);
+      setStatus(`Copied ${taskCount(tasks.length)}. Paste them into First Things on your other device.`);
     } catch {
       // No Clipboard API (insecure context, old browser) or permission refused.
       setStatus('Could not copy to the clipboard. Use Export file instead.');
@@ -132,7 +132,7 @@ export function initDataTransfer({ store, now }) {
       return;
     }
     handleImportText(raw, file.name, {
-      invalid: 'That file is not a Decision Matrix export. Nothing was changed.',
+      invalid: 'That file is not a First Things export. Nothing was changed.',
       newer: 'That file was made by a newer version of the app. Nothing was changed.',
     });
   });
@@ -154,7 +154,7 @@ export function initDataTransfer({ store, now }) {
       return;
     }
     handleImportText(text, 'the clipboard', {
-      invalid: 'The clipboard does not contain a Decision Matrix board. Nothing was changed.',
+      invalid: 'The clipboard does not contain a First Things board. Nothing was changed.',
       newer: 'The board on the clipboard was made by a newer version of the app. Nothing was changed.',
     });
   });
@@ -162,7 +162,7 @@ export function initDataTransfer({ store, now }) {
   pasteImportButton.addEventListener('click', () => {
     const raw = pasteText.value;
     const confirming = handleImportText(raw, 'the pasted text', {
-      invalid: 'The pasted text is not a Decision Matrix board. Nothing was changed.',
+      invalid: 'The pasted text is not a First Things board. Nothing was changed.',
       newer: 'The pasted board was made by a newer version of the app. Nothing was changed.',
     });
     if (!confirming) {

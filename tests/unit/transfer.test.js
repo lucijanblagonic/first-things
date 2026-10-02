@@ -21,7 +21,7 @@ function validTask(overrides = {}) {
 }
 
 test('exportFilename contains the app name and the local date', () => {
-  assert.equal(exportFilename(NOW), 'decision-matrix-2026-10-02.json');
+  assert.equal(exportFilename(NOW), 'first-things-2026-10-02.json');
 });
 
 test('serializeExport writes the version, a timestamp and every task', () => {

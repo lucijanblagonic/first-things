@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Decision Matrix</title>
+  <title>First Things</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
@@ -22,6 +22,10 @@
         if (window.localStorage.getItem('decision-matrix:layout') === 'urgent-left') {
           document.documentElement.setAttribute('data-layout', 'urgent-left');
         }
+        var contrast = window.localStorage.getItem('decision-matrix:contrast');
+        if (contrast === 'high' || (contrast !== 'normal' && window.matchMedia('(prefers-contrast: more)').matches)) {
+          document.documentElement.setAttribute('data-contrast', 'high');
+        }
       } catch (e) {
         // localStorage unavailable; fall back to prefers-color-scheme only.
       }
@@ -39,7 +43,10 @@
   <a class="skip-link visually-hidden" href="#main">Skip to board</a>
 
   <header class="app-header">
-    <h1 class="app-title">Decision Matrix</h1>
+    <h1 class="app-title">
+      <svg class="app-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="13" y="2" width="9" height="9" rx="2.5" fill="currentColor" stroke="none"/></svg>
+      First Things
+    </h1>
     <div class="app-header-controls">
       <!-- Icons: Lucide (ISC license), https://lucide.dev -->
       <span class="tooltip-anchor">
@@ -223,6 +230,15 @@
           </span>
         </label>
       </fieldset>
+    </section>
+
+    <section class="settings-section" aria-labelledby="settings-appearance-heading">
+      <h3 id="settings-appearance-heading">Appearance</h3>
+      <div class="field checkbox-field">
+        <input type="checkbox" id="high-contrast-toggle" aria-describedby="high-contrast-hint" />
+        <label for="high-contrast-toggle">High contrast</label>
+      </div>
+      <p class="settings-hint" id="high-contrast-hint">Darker borders, a stronger focus ring and outlined buttons.</p>
     </section>
 
     <section class="settings-section" aria-labelledby="settings-keyboard-heading">

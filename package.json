@@ -1,7 +1,7 @@
 {
-  "name": "decision-matrix",
+  "name": "first-things",
   "version": "0.1.0",
-  "description": "A minimalist, keyboard-first importance/urgency task matrix.",
+  "description": "A minimalist, keyboard-first task board that sorts what you do by importance and urgency.",
   "type": "module",
   "private": true,
   "engines": {

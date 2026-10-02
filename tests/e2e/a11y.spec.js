@@ -150,6 +150,16 @@ for (const colorScheme of /** @type {const} */ (['light', 'dark'])) {
     expect(results.violations, JSON.stringify(results.violations, null, 2)).toEqual([]);
   });
 
+  test(`board in high contrast has no automated a11y violations (${colorScheme})`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme });
+    await page.addInitScript(() => window.localStorage.setItem('decision-matrix:contrast', 'high'));
+    await seedAndOpenRichBoard(page);
+    await expect(page.locator('html')).toHaveAttribute('data-contrast', 'high');
+
+    const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+    expect(results.violations, JSON.stringify(results.violations, null, 2)).toEqual([]);
+  });
+
   test(`board in urgent-left layout has no automated a11y violations (${colorScheme})`, async ({ page }) => {
     await page.emulateMedia({ colorScheme });
     await page.addInitScript(() => window.localStorage.setItem('decision-matrix:layout', 'urgent-left'));

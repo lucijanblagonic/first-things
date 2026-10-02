@@ -1,7 +1,7 @@
 schema: spec-driven
 
 context: |
-  Product: "Decision Matrix" — a minimalist, keyboard-first TODO app organised as a
+  Product: "First Things" (formerly "Decision Matrix"; storage keys keep the decision-matrix: prefix) — a minimalist, keyboard-first TODO app organised as a
   4-quadrant importance/urgency matrix (Randy Pausch / Eisenhower). Think "Linear, but
   for personal priorities". Single user, runs entirely in the browser.
 

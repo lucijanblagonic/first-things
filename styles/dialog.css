@@ -62,10 +62,7 @@ dialog h2 {
 }
 
 .checkbox-field input {
-  width: 20px;
-  height: 20px;
   margin: 0;
-  accent-color: var(--color-text);
 }
 
 .dialog-actions {
@@ -254,7 +251,7 @@ dialog h2 {
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-3);
-  border: 1px solid var(--color-border-strong);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   cursor: pointer;
   min-width: 0;
@@ -265,8 +262,8 @@ dialog h2 {
 }
 
 .layout-option:has(input:checked) {
-  border-color: var(--color-text);
-  box-shadow: inset 0 0 0 1px var(--color-text);
+  border-color: var(--color-border-strong);
+  box-shadow: inset 0 0 0 1px var(--color-border-strong);
 }
 
 .layout-option input {

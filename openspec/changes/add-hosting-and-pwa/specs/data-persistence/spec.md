@@ -65,7 +65,7 @@ The user SHALL be able to copy all tasks on the board to the clipboard as text f
 
 #### Scenario: Clipboard does not hold a board
 - **WHEN** the user chooses Paste while the clipboard holds unrelated text or is empty
-- **THEN** a message says the clipboard does not contain a Decision Matrix board and that nothing was changed, and the board is unchanged
+- **THEN** a message says the clipboard does not contain a First Things board and that nothing was changed, and the board is unchanged
 
 #### Scenario: Browser will not let the app read the clipboard
 - **WHEN** the user chooses Paste and the browser refuses or does not support reading the clipboard
@@ -80,7 +80,7 @@ If the chosen file is not valid JSON, does not match the task data format, conta
 
 #### Scenario: Not a board file
 - **WHEN** the user chooses a file that is not valid JSON or is not in the task data format
-- **THEN** a message says the file is not a Decision Matrix export and that nothing was changed, and the board is unchanged
+- **THEN** a message says the file is not a First Things export and that nothing was changed, and the board is unchanged
 
 #### Scenario: File from a newer version
 - **WHEN** the user chooses a file whose format version is greater than the app supports

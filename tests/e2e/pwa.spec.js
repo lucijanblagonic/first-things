@@ -28,7 +28,7 @@ test('manifest is linked and valid', async ({ page }) => {
   expect(response.status()).toBe(200);
   const manifest = await response.json();
 
-  expect(manifest.name).toBe('Decision Matrix');
+  expect(manifest.name).toBe('First Things');
   expect(manifest.short_name).toBeTruthy();
   expect(manifest.display).toBe('standalone');
   expect(manifest.start_url).toBe('.');

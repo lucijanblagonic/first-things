@@ -26,7 +26,7 @@ export function serializeExport(tasks, now) {
  * @returns {string} suggested file name, dated in local time
  */
 export function exportFilename(now) {
-  return `decision-matrix-${todayISO(now)}.json`;
+  return `first-things-${todayISO(now)}.json`;
 }
 
 /**

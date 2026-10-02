@@ -34,11 +34,11 @@ The system SHALL label the rows and columns so the meaning of each position is u
 ## ADDED Requirements
 
 ### Requirement: App header
-The page SHALL start with a header containing the app title "Decision Matrix" as the page's `h1` and two icon-only buttons on the right: theme and Settings. The title SHALL be the largest text on the page and larger than quadrant titles. The header SHALL have no border and no background different from the page background. Each icon button SHALL have an accessible name, a pointer target of at least 32×32 CSS pixels, and a tooltip with its name (and shortcut keycap, where one exists) that appears on hover and on keyboard focus, can be dismissed with Escape without moving focus, and stays visible while the pointer is over it (WCAG 1.4.13). Tooltips SHALL NOT be the only source of the accessible name.
+The page SHALL start with a header containing the app title "First Things" as the page's `h1` and two icon-only buttons on the right: theme and Settings. The title SHALL be the largest text on the page and larger than quadrant titles. The header SHALL have no border and no background different from the page background. Each icon button SHALL have an accessible name, a pointer target of at least 32×32 CSS pixels, and a tooltip with its name (and shortcut keycap, where one exists) that appears on hover and on keyboard focus, can be dismissed with Escape without moving focus, and stays visible while the pointer is over it (WCAG 1.4.13). Tooltips SHALL NOT be the only source of the accessible name.
 
 #### Scenario: Quiet header
 - **WHEN** the board is rendered
-- **THEN** the header shows a large bold "Decision Matrix" title and two icon buttons, with no border line between the header and the board
+- **THEN** the header shows a large bold "First Things" title and two icon buttons, with no border line between the header and the board
 
 #### Scenario: Tooltip on focus
 - **WHEN** the user tabs to the Settings button

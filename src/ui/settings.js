@@ -1,7 +1,7 @@
 /**
  * User settings that live outside the task data (design D16, D18): the
- * quadrant layout direction, plus the Settings dialog that hosts it, the
- * single-key shortcuts toggle and the shortcuts reference.
+ * quadrant layout direction and the contrast level, plus the Settings dialog
+ * that hosts them, the single-key shortcuts toggle and the shortcuts reference.
  */
 
 import { LAYOUTS } from '../core/quadrants.js';
@@ -9,6 +9,7 @@ import { announce } from './announcer.js';
 
 const LAYOUT_KEY = 'decision-matrix:layout';
 const DEFAULT_LAYOUT = 'urgent-right';
+const CONTRAST_KEY = 'decision-matrix:contrast';
 
 /**
  * Current layout direction, read from the `<html>` attribute that the inline
@@ -41,6 +42,32 @@ export function setLayout(value, { silent = false } = {}) {
 }
 
 /**
+ * Whether the stronger-outline look is on, read from the `<html>` attribute
+ * that the inline head script (and `setHighContrast`) maintain. Until the
+ * user chooses, it follows the OS "increase contrast" preference.
+ * @returns {boolean}
+ */
+export function isHighContrast() {
+  return document.documentElement.dataset.contrast === 'high';
+}
+
+/**
+ * Applies and persists the contrast level. Both values are stored, so an
+ * explicit "off" also overrides the OS preference. Persisting is best-effort.
+ * @param {boolean} on
+ */
+export function setHighContrast(on) {
+  if (on) document.documentElement.dataset.contrast = 'high';
+  else delete document.documentElement.dataset.contrast;
+  try {
+    window.localStorage.setItem(CONTRAST_KEY, on ? 'high' : 'normal');
+  } catch {
+    // Non-fatal: the setting just won't survive reload.
+  }
+  announce(`High contrast ${on ? 'on' : 'off'}`);
+}
+
+/**
  * Wires the Settings dialog (design D18): open/close, focus return, backdrop
  * click, the layout radios and the single-key shortcuts checkbox. The
  * shortcuts reference inside it is rendered by keyboard.js.
@@ -54,6 +81,7 @@ export function initSettingsDialog({ openButton, keyboard }) {
   const dialog = /** @type {HTMLDialogElement} */ (document.getElementById('settings-dialog'));
   const closeButton = /** @type {HTMLButtonElement} */ (document.getElementById('settings-close-button'));
   const singleKeyToggle = /** @type {HTMLInputElement} */ (document.getElementById('single-key-shortcuts-toggle'));
+  const contrastToggle = /** @type {HTMLInputElement} */ (document.getElementById('high-contrast-toggle'));
   const radios = /** @type {HTMLInputElement[]} */ ([...dialog.querySelectorAll('input[name="layout"]')]);
   /** @type {HTMLElement | null} */
   let returnFocusEl = null;
@@ -62,6 +90,7 @@ export function initSettingsDialog({ openButton, keyboard }) {
     const layout = getLayout();
     for (const radio of radios) radio.checked = radio.value === layout;
     singleKeyToggle.checked = keyboard.isSingleKeyEnabled();
+    contrastToggle.checked = isHighContrast();
   }
 
   function open() {
@@ -98,6 +127,10 @@ export function initSettingsDialog({ openButton, keyboard }) {
       if (radio.checked) setLayout(radio.value);
     });
   }
+
+  contrastToggle.addEventListener('change', () => {
+    setHighContrast(contrastToggle.checked);
+  });
 
   singleKeyToggle.addEventListener('change', () => {
     keyboard.setSingleKeyEnabled(singleKeyToggle.checked);

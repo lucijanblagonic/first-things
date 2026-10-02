@@ -1,4 +1,4 @@
-# Decision Matrix
+# First Things
 
 A minimalist, keyboard-first TODO app that organises tasks on a four-quadrant
 importance/urgency matrix (the Randy Pausch / Eisenhower matrix), instead of a
@@ -26,7 +26,9 @@ tooltip):
 
 - **Theme** (monitor / sun / moon): cycles System → Light → Dark. System
   follows your OS setting.
-- **Settings** (gear): *Layout* (urgent column right or left), *Keyboard*
+- **Settings** (gear): *Layout* (urgent column right or left), *Appearance*
+  (High contrast: darker borders, a stronger focus ring and outlined buttons;
+  on by default if your OS asks for increased contrast), *Keyboard*
   (turn single-key shortcuts on or off), *Data* (Export file, Import file,
   Copy and Paste, see [Back up or move your board](#back-up-or-move-your-board)),
   and a grouped *Shortcuts* reference.
@@ -123,7 +125,7 @@ this site's origin. This means:
 Settings → **Data** takes your tasks out and brings them back in:
 
 - **Export file** saves all tasks as a JSON file
-  (`decision-matrix-YYYY-MM-DD.json`). **Import file**, on any computer,
+  (`first-things-YYYY-MM-DD.json`). **Import file**, on any computer,
   replaces that board with the file's tasks after a confirmation that shows
   how many tasks will be replaced and how many will be loaded.
 - **Copy** and **Paste** do the same through the clipboard. With Apple's
@@ -135,8 +137,10 @@ Settings → **Data** takes your tasks out and brings them back in:
 
 Import and Paste **replace** the board; they do not merge. Tasks only: theme,
 layout and shortcut preferences are not included. The board that was replaced
-is kept as a `decision-matrix:backup-…` entry in the browser's `localStorage`.
-Files or text that aren't a Decision Matrix board, or that come from a newer
+is kept as a `decision-matrix:backup-…` entry in the browser's `localStorage`
+(the app was called Decision Matrix before it was First Things; storage keys
+keep the old prefix so existing boards carry over).
+Files or text that aren't a First Things board, or that come from a newer
 version of the app, are rejected and change nothing.
 
 Storage is implemented behind a small adapter interface

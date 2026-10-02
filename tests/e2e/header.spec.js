@@ -5,7 +5,7 @@ test.use({ viewport: { width: 1280, height: 800 } });
 test('header: large h1 title, no border, two icon buttons', async ({ page }) => {
   await page.goto('/');
   const title = page.locator('h1');
-  await expect(title).toHaveText('Decision Matrix');
+  await expect(title).toHaveText('First Things');
 
   const sizes = await page.evaluate(() => ({
     title: parseFloat(getComputedStyle(document.querySelector('h1')).fontSize),

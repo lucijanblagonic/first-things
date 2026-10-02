@@ -1,6 +1,12 @@
 /* Design tokens (design D9, D14). Monochrome: one neutral gray ramp with
    equal R/G/B channels; the only chromatic tokens are --color-danger*, which
-   are reserved for validation and error states. Themes only remap colors. */
+   are reserved for validation and error states. Themes only remap colors.
+
+   Outlines (borders, focus ring, keycaps) come in two strengths. The default
+   is the softer one; each theme also defines the stronger `--strong-*` values,
+   which the High contrast setting (`data-contrast='high'`, at the end of this
+   file) swaps in. Both strengths keep control boundaries and the focus ring at
+   3:1 or better against their background. */
 
 :root {
   --gray-0: #ffffff;
@@ -22,20 +28,26 @@
   --color-surface-raised: var(--gray-0);
   --color-hover: var(--gray-2);
   --color-border: var(--gray-4);
-  --color-border-strong: var(--gray-7);
+  --color-border-strong: var(--gray-6);
   --color-text: var(--gray-10);
   --color-text-muted: var(--gray-8);
   --color-inverse-bg: var(--gray-10);
   --color-inverse-text: var(--gray-0);
-  --color-focus: var(--gray-10);
+  --color-focus: var(--gray-7);
   --color-scrollbar: var(--gray-5);
+
+  --strong-border: var(--gray-6);
+  --strong-border-strong: var(--gray-8);
+  --strong-focus: var(--gray-10);
+  --strong-kbd-border: var(--gray-7);
+  --strong-kbd-text: var(--gray-10);
 
   /* Raised surfaces (dialogs, toasts) and keycaps — design D23. */
   --color-hover-raised: var(--gray-2);
   --color-divider: var(--gray-3);
   --color-kbd-bg: var(--gray-0);
-  --color-kbd-border: var(--gray-6);
-  --color-kbd-text: var(--gray-9);
+  --color-kbd-border: var(--gray-4);
+  --color-kbd-text: var(--gray-8);
 
   --color-danger: #b91c1c;
   --color-danger-bg: #fef2f2;
@@ -60,7 +72,7 @@
   --font-size-app-title: 2rem;
   --font-size-quadrant-title: 1.5rem;
   --font-size-quadrant-subtitle: 0.95rem;
-  --font-size-axis: 1rem;
+  --font-size-axis: 0.8rem;
   --font-size-task: 0.92rem;
   --font-size-meta: 0.85rem;
   --font-size-kbd: 0.75rem;
@@ -75,18 +87,24 @@
     --color-surface-raised: var(--gray-10);
     --color-hover: var(--gray-10);
     --color-border: var(--gray-9);
-    --color-border-strong: var(--gray-6);
+    --color-border-strong: var(--gray-7);
     --color-text: var(--gray-2);
     --color-text-muted: var(--gray-5);
     --color-inverse-bg: var(--gray-2);
     --color-inverse-text: var(--gray-11);
-    --color-focus: var(--gray-2);
+    --color-focus: var(--gray-5);
     --color-scrollbar: var(--gray-8);
     --color-hover-raised: var(--gray-9);
     --color-divider: var(--gray-8);
     --color-kbd-bg: var(--gray-9);
-    --color-kbd-border: var(--gray-6);
-    --color-kbd-text: var(--gray-2);
+    --color-kbd-border: var(--gray-7);
+    --color-kbd-text: var(--gray-3);
+
+    --strong-border: var(--gray-7);
+    --strong-border-strong: var(--gray-5);
+    --strong-focus: var(--gray-0);
+    --strong-kbd-border: var(--gray-6);
+    --strong-kbd-text: var(--gray-0);
 
     --color-danger: #f87171;
     --color-danger-bg: #2a1414;
@@ -104,18 +122,24 @@
   --color-surface-raised: var(--gray-10);
   --color-hover: var(--gray-10);
   --color-border: var(--gray-9);
-  --color-border-strong: var(--gray-6);
+  --color-border-strong: var(--gray-7);
   --color-text: var(--gray-2);
   --color-text-muted: var(--gray-5);
   --color-inverse-bg: var(--gray-2);
   --color-inverse-text: var(--gray-11);
-  --color-focus: var(--gray-2);
+  --color-focus: var(--gray-5);
   --color-scrollbar: var(--gray-8);
   --color-hover-raised: var(--gray-9);
   --color-divider: var(--gray-8);
   --color-kbd-bg: var(--gray-9);
-  --color-kbd-border: var(--gray-6);
-  --color-kbd-text: var(--gray-2);
+  --color-kbd-border: var(--gray-7);
+  --color-kbd-text: var(--gray-3);
+
+  --strong-border: var(--gray-7);
+  --strong-border-strong: var(--gray-5);
+  --strong-focus: var(--gray-0);
+  --strong-kbd-border: var(--gray-6);
+  --strong-kbd-text: var(--gray-0);
 
   --color-danger: #f87171;
   --color-danger-bg: #2a1414;
@@ -128,4 +152,14 @@
 
 :root[data-theme='light'] {
   color-scheme: light;
+}
+
+/* High contrast (Settings → Appearance): stronger outlines in either theme.
+   Must stay last so it wins over the theme blocks above. */
+:root[data-contrast='high'] {
+  --color-border: var(--strong-border);
+  --color-border-strong: var(--strong-border-strong);
+  --color-focus: var(--strong-focus);
+  --color-kbd-border: var(--strong-kbd-border);
+  --color-kbd-text: var(--strong-kbd-text);
 }

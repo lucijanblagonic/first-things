@@ -29,7 +29,7 @@ The app SHALL provide the metadata browsers require to offer installation: a nam
 
 #### Scenario: Browser offers installation
 - **WHEN** the app is opened in a browser that supports installing web apps
-- **THEN** the browser offers to install it under the name "Decision Matrix" with the app's icon
+- **THEN** the browser offers to install it under the name "First Things" with the app's icon
 
 #### Scenario: Launching the installed app
 - **WHEN** the user launches the installed app
