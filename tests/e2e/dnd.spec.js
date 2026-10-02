@@ -16,8 +16,12 @@ test('reorder within a quadrant by drag persists after reload', async ({ page })
 
   await expect(page.locator('#do-list li .task-title')).toHaveText(['A', 'B', 'C']);
 
-  // Drag the third task (C) above the first task (A).
-  await page.locator('#do-list li', { hasText: 'C' }).dragTo(page.locator('#do-list li', { hasText: 'A' }));
+  // Drag the third task (C) above the first task (A). Drop in A's upper
+  // half: a drop on the exact centre sits on the before/after boundary and
+  // lands on either side depending on the browser's rounding.
+  await page
+    .locator('#do-list li', { hasText: 'C' })
+    .dragTo(page.locator('#do-list li', { hasText: 'A' }), { targetPosition: { x: 40, y: 4 } });
 
   await expect(page.locator('#do-list li .task-title')).toHaveText(['C', 'A', 'B']);
 
