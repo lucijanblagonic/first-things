@@ -17,6 +17,7 @@ import { validateTitle } from '../core/task.js';
 export function initDialogs({ store, onDelete, focus }) {
   const dialog = /** @type {HTMLDialogElement} */ (document.getElementById('edit-dialog'));
   const form = /** @type {HTMLFormElement} */ (document.getElementById('edit-form'));
+  const heading = /** @type {HTMLElement} */ (document.getElementById('edit-dialog-title'));
   const titleInput = /** @type {HTMLInputElement} */ (document.getElementById('edit-title'));
   const notesInput = /** @type {HTMLTextAreaElement} */ (document.getElementById('edit-notes'));
   const dueInput = /** @type {HTMLInputElement} */ (document.getElementById('edit-due'));
@@ -99,8 +100,15 @@ export function initDialogs({ store, onDelete, focus }) {
       titleError.hidden = true;
       titleInput.removeAttribute('aria-invalid');
       dialog.showModal();
-      titleInput.focus();
-      titleInput.select();
+      if (window.matchMedia('(pointer: coarse)').matches) {
+        // Touch: focusing the field would raise the keyboard over half the
+        // sheet before the user has chosen what to change. Focus the heading
+        // instead; a tap on any field brings the keyboard up.
+        heading.focus();
+      } else {
+        titleInput.focus();
+        titleInput.select();
+      }
     },
     isOpen() {
       return dialog.open;

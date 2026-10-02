@@ -11,6 +11,7 @@ import { initDialogs } from './ui/dialogs.js';
 import { initSettingsDialog } from './ui/settings.js';
 import { initDataTransfer } from './ui/data-transfer.js';
 import { initTooltips } from './ui/tooltip.js';
+import { initViewportVars } from './ui/viewport.js';
 import { createFocusController } from './ui/focus.js';
 import { initKeyboard, renderShortcutsReference } from './ui/keyboard.js';
 import { initDnd } from './ui/dnd.js';
@@ -25,6 +26,7 @@ import {
 const now = () => new Date();
 
 async function main() {
+  initViewportVars();
   initAnnouncer(/** @type {HTMLElement} */ (document.getElementById('live-region')));
   initToast({
     toast: /** @type {HTMLElement} */ (document.getElementById('toast-container')),

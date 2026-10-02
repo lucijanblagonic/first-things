@@ -179,7 +179,7 @@ test('Do is emphasised without shifting its content relative to its neighbour', 
   expect(widths[0]).toBe(widths[1]);
 });
 
-test('Do is the one raised card; the other quadrants are flat and alike, in both themes', async ({ page }) => {
+test('Do is the one card with a surface; the other quadrants are see-through, in both themes', async ({ page }) => {
   for (const colorScheme of /** @type {const} */ (['light', 'dark'])) {
     await page.emulateMedia({ colorScheme });
     await page.goto('/');
@@ -187,24 +187,31 @@ test('Do is the one raised card; the other quadrants are flat and alike, in both
       Object.fromEntries(
         ['do', 'plan', 'limit', 'drop'].map((id) => {
           const style = getComputedStyle(/** @type {Element} */ (document.getElementById(`quadrant-${id}`)));
-          return [id, { shadow: style.boxShadow, background: style.backgroundColor, outline: style.outlineStyle }];
+          return [
+            id,
+            {
+              shadow: style.boxShadow,
+              background: style.backgroundColor,
+              outline: style.outlineStyle,
+              border: style.borderTopWidth,
+            },
+          ];
         }),
       ),
     );
+    const transparent = /rgba\(0, 0, 0, 0\)|transparent/;
 
-    // Do: raised by a shadow, with no outline that could read as focus.
+    // Do: a solid surface raised by a shadow, with no outline that could read as focus.
+    expect(cards.do.background, colorScheme).not.toMatch(transparent);
     expect(cards.do.shadow, colorScheme).not.toBe('none');
     expect(cards.do.outline, colorScheme).toBe('none');
 
-    // The other three: flat, solid, and the same surface as each other.
+    // The other three: see-through and flat, with the same border width as Do.
     for (const id of ['plan', 'limit', 'drop']) {
+      expect(cards[id].background, `${id} ${colorScheme}`).toMatch(transparent);
       expect(cards[id].shadow, `${id} ${colorScheme}`).toBe('none');
-      expect(cards[id].background, `${id} ${colorScheme}`).not.toMatch(/rgba\(0, 0, 0, 0\)|transparent/);
-      expect(cards[id].background, `${id} ${colorScheme}`).toBe(cards.plan.background);
+      expect(cards[id].border, `${id} ${colorScheme}`).toBe(cards.do.border);
     }
-
-    // Light theme: every card, Do included, is the same white surface.
-    if (colorScheme === 'light') expect(cards.do.background).toBe(cards.plan.background);
   }
 });
 
@@ -397,5 +404,43 @@ test('a task row\'s checkbox, title and delete button are vertically centred in 
   expect(Math.abs(double.checkbox - double.title)).toBeLessThanOrEqual(0.75);
   expect(Math.abs(double.remove - double.title)).toBeLessThanOrEqual(0.75);
   expect(double.title).toBeLessThan(double.row);
+});
+
+test('Tab loops through the add form: input, Add, Cancel, and back', async ({ page }) => {
+  await page.goto('/');
+  await page.click('#plan-add-button');
+  const input = page.locator('#plan-add-input');
+  const submit = page.locator('#plan-add-form button[type="submit"]');
+  const cancel = page.locator('#plan-add-cancel');
+  await expect(input).toBeFocused();
+
+  await page.keyboard.press('Tab');
+  await expect(submit).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(cancel).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(input).toBeFocused();
+
+  // And backwards.
+  await page.keyboard.press('Shift+Tab');
+  await expect(cancel).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
+  await expect(submit).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
+  await expect(input).toBeFocused();
+
+  // The loop survives adding a task (the form stays open for the next one).
+  await input.fill('Looped');
+  await page.keyboard.press('Enter');
+  await expect(page.locator('#plan-list li .task-title')).toHaveText('Looped');
+  await expect(input).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(submit).toBeFocused();
+
+  // Escape from any of the three closes the form.
+  await page.keyboard.press('Tab');
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#plan-add-form')).toBeHidden();
+  await expect(page.locator('#plan-add-button')).toBeFocused();
 });
 

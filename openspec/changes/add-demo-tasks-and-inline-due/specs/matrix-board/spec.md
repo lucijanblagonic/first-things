@@ -14,15 +14,15 @@ Each quadrant SHALL show its active tasks (not archived) in the user-defined ord
 - **THEN** it shows its heading and the "Add task" control, and no "No tasks yet" text
 
 ### Requirement: Do is the one raised quadrant
-All four quadrants SHALL share the same surface and border width, so their contents align. The Do quadrant alone SHALL appear raised, by means of a shadow, and SHALL NOT be emphasised by an outline that could be mistaken for a focus indicator. In the dark theme, where a shadow is hard to see, Do MAY additionally use a lighter surface than the other three.
+The Do quadrant alone SHALL have a solid surface and appear raised, by means of a shadow. The other three quadrants SHALL be see-through, showing the page background inside their border. All four SHALL keep the same border width, so their contents align. Do SHALL NOT be emphasised by an outline that could be mistaken for a focus indicator.
 
 #### Scenario: Light theme
 - **WHEN** the board is shown in the light theme
-- **THEN** all four quadrants are the same white surface, and only Do has a shadow
+- **THEN** Do is a white card with a shadow, and Plan, Delegate and Eliminate show the page background
 
 #### Scenario: Dark theme
 - **WHEN** the board is shown in the dark theme
-- **THEN** Plan, Delegate and Eliminate share one surface, and Do has a shadow and is distinguishable from them
+- **THEN** Do is a card lighter than the page with a shadow, and Plan, Delegate and Eliminate show the page background
 
 ## REMOVED Requirements
 

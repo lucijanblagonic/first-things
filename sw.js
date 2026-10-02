@@ -45,6 +45,7 @@ const PRECACHE_URLS = [
   'src/ui/theme.js',
   'src/ui/toast.js',
   'src/ui/tooltip.js',
+  'src/ui/viewport.js',
   'styles/base.css',
   'styles/board.css',
   'styles/dialog.css',

@@ -193,14 +193,15 @@ body {
   flex-direction: column;
   min-height: 0;
   min-width: 0;
-  background: var(--color-surface);
+  /* See-through: only Do (below) gets a surface. */
+  background: transparent;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--space-4);
 }
 
-/* Do is the one raised card: the same surface as the others plus a large
-   shadow (and, in the dark theme, a step lighter). No outline, so it can't be mistaken for focus, and
+/* Do is the one card with a surface, raised by a large shadow; the other
+   three are see-through outlines on the page. No outline, so it can't be mistaken for focus, and
    the same border width as the others, so its content lines up with theirs. */
 .quadrant-do {
   --quadrant-area: do;
@@ -385,6 +386,25 @@ body {
 
   .quadrant {
     min-height: 16rem;
+  }
+
+  /* Stacked layout: let the page grow with its content and scroll as a
+     whole. Squeezing the board into the viewport height (as the wide layout
+     does) made the quadrants overflow it, which lost the board's bottom
+     padding and turned <body> into a nested scroller. */
+  html,
+  body {
+    height: auto;
+  }
+
+  body {
+    min-height: 100dvh;
+  }
+
+  .board {
+    flex: 0 0 auto;
+    min-height: auto;
+    padding-bottom: calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
   }
 }
 

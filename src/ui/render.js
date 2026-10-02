@@ -135,11 +135,24 @@ export function initAddForms(store, { announce }) {
     addButton.addEventListener('click', () => openForm(addButton));
     cancelButton.addEventListener('click', closeForm);
 
-    input.addEventListener('keydown', (event) => {
+    const submitButton = /** @type {HTMLButtonElement} */ (form.querySelector('button[type="submit"]'));
+    const loop = [input, submitButton, cancelButton];
+
+    form.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') {
         event.stopPropagation();
         closeForm();
+        return;
       }
+      // While the form is open, Tab cycles input → Add → Cancel → input (and
+      // Shift+Tab the other way) instead of leaving it. Moved by hand rather
+      // than only wrapping at the ends, so it also works where the browser
+      // skips buttons when tabbing (Safari without Full Keyboard Access).
+      if (event.key !== 'Tab' || event.altKey || event.ctrlKey || event.metaKey) return;
+      const index = loop.indexOf(/** @type {any} */ (document.activeElement));
+      if (index === -1) return;
+      event.preventDefault();
+      loop[(index + (event.shiftKey ? loop.length - 1 : 1)) % loop.length].focus();
     });
 
     form.addEventListener('submit', (event) => {

@@ -29,8 +29,7 @@
   --color-hover: var(--gray-2);
   /* Row hover as a translucent wash, so it shows on any card surface. */
   --color-hover-row: color-mix(in srgb, var(--gray-10) 6%, transparent);
-  /* All four quadrants share the surface colour; Do alone is raised by a
-     shadow (board.css). */
+  /* Do is the only quadrant with a surface, raised by a shadow (board.css). */
   --color-surface-do: var(--color-surface);
   --shadow-raised: 0 2px 6px rgba(0, 0, 0, 0.1), 0 18px 48px rgba(0, 0, 0, 0.24);
   --color-border: var(--gray-4);
