@@ -111,13 +111,26 @@ async function main() {
    * @param {string} taskId
    * @param {number} delta
    */
+  /**
+   * Briefly tints a task's row so the eye can find where it landed after a
+   * move. Rows are rebuilt on every render, so the class needs no cleanup.
+   * @param {string} taskId
+   */
+  function flashMoved(taskId) {
+    const li = document.querySelector(`#main li[data-id="${CSS.escape(taskId)}"]`);
+    if (li) li.classList.add('task-moved');
+  }
+
   function reorderTaskById(taskId, delta) {
     const task = store.getState().tasks.find((t) => t.id === taskId);
     if (!task) return;
+    const indexBefore = activeTasks(store.getState().tasks, task.quadrant, now()).findIndex((t) => t.id === taskId);
     store.dispatch('reorderTask', { id: taskId, delta });
     const siblings = activeTasks(store.getState().tasks, task.quadrant, now());
     const index = siblings.findIndex((t) => t.id === taskId);
     if (index === -1) return;
+    // Not at the top/bottom edge, where the task stays put.
+    if (index !== indexBefore) flashMoved(taskId);
     announce(`Moved to position ${index + 1} of ${siblings.length}`);
   }
 
@@ -130,6 +143,7 @@ async function main() {
     if (!task) return;
     store.dispatch('moveTask', { id: taskId, toQuadrant, toIndex: Number.MAX_SAFE_INTEGER });
     focus.focusTask(taskId);
+    flashMoved(taskId);
     const label = getQuadrant(toQuadrant)?.title ?? toQuadrant;
     announce(`Moved "${task.title}" to ${label}`);
   }
@@ -165,7 +179,7 @@ async function main() {
   initDataTransfer({ store, now });
   renderShortcutsReference();
 
-  initDnd({ store, announce, focus });
+  initDnd({ store, announce, focus, onMoved: flashMoved });
 
   // Keep the focus model in sync with native Tab navigation landing on a row
   // (not just programmatic focusTask() calls).

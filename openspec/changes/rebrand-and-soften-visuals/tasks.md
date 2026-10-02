@@ -15,7 +15,13 @@
 - [x] 2.3 Add the logo mark next to the name in the header in `index.html` with `.app-logo` styles in `styles/board.css`; verify the header test in `tests/e2e/appearance.spec.js`
 - [x] 2.4 Update the name in the unarchived delta specs of `add-hosting-and-pwa` and `refine-header-and-settings`; verify `openspec validate --strict` passes for all three changes
 
-## 3. Integration
+## 3. Move feedback and add form
 
-- [x] 3.1 Run `npm test` and `npm run test:e2e`; verify no failures in Chromium and WebKit locally
-- [x] 3.2 Verify the Test workflow passes in all three browsers on the pull request
+- [x] 3.1 In `styles/task.css` and `styles/tokens.css`, redraw the drop insertion indicator as a zero-height bar with a dot, tint the target quadrant, and add the `task-moved` fade; verify the drag test in `tests/e2e/appearance.spec.js` (indicator placed between the right rows, rows do not shift)
+- [x] 3.2 In `src/main.js` and `src/ui/dnd.js`, highlight a task's row after a keyboard move or a drop, but not when a reorder at the edge moves nothing; verify the keyboard-move test in `tests/e2e/appearance.spec.js`
+- [x] 3.3 In `styles/board.css`, lay the add form out on one line at the same height and position as the "Add task" button, with the validation message wrapping below; verify the two add-form tests in `tests/e2e/appearance.spec.js` (desktop and 375px)
+
+## 4. Integration
+
+- [x] 4.1 Run `npm test` and `npm run test:e2e`; verify no failures in Chromium and WebKit locally
+- [ ] 4.2 Verify the Test workflow passes in all three browsers on the pull request

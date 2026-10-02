@@ -30,9 +30,10 @@ function computeInsertionIndex(listEl, clientY, excludeId) {
  *   store: import('../core/store.js').ReturnType,
  *   announce: (msg: string) => void,
  *   focus: import('./focus.js').ReturnType,
+ *   onMoved?: (taskId: string) => void,
  * }} deps
  */
-export function initDnd({ store, announce, focus }) {
+export function initDnd({ store, announce, focus, onMoved }) {
   /** @type {string | null} */
   let draggingId = null;
   /** @type {HTMLElement | null} */
@@ -123,6 +124,7 @@ export function initDnd({ store, announce, focus }) {
       const wasSameQuadrant = task.quadrant === quadrant.id;
       store.dispatch('moveTask', { id: taskId, toQuadrant: quadrant.id, toIndex: index });
       focus.focusTask(taskId);
+      if (onMoved) onMoved(taskId);
 
       if (wasSameQuadrant) {
         announce(`Reordered "${task.title}"`);

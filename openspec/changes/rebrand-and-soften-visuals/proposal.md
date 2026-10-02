@@ -25,6 +25,11 @@ heading.
   focus line instead of two; the Do quadrant is emphasised without shifting its
   content; task rows and the "Add task" label line up with the quadrant heading;
   rows are tighter.
+- Moving a task is easier to follow: while dragging, a bar with a dot shows exactly
+  where the task will land (without shifting the rows) and the target quadrant is
+  tinted; after a move by drag or keyboard, the task's row is briefly highlighted.
+- The add form is a single line (input, Add, Cancel) the same height and position as
+  the "Add task" button it replaces, so opening it does not move anything.
 - New **High contrast** setting (Settings → Appearance) that brings back the
   stronger outlines. It follows the OS "increase contrast" preference until the
   user chooses.
@@ -36,6 +41,8 @@ heading.
 None.
 
 ### Modified Capabilities
+- `task-management`: adds a requirement that moving a task shows where it will land
+  and where it landed.
 - `theming`: adds a contrast preference (soft by default, High contrast on request
   or by OS preference) and a requirement that focus indicators are fully visible.
 

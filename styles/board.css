@@ -187,6 +187,7 @@ body {
 }
 
 .quadrant {
+  --add-row-height: 32px;
   grid-area: var(--quadrant-area, auto);
   display: flex;
   flex-direction: column;
@@ -282,16 +283,15 @@ body {
   align-items: center;
   align-self: flex-start;
   margin-top: var(--space-2);
-  /* Borderless: pulled left by its own padding so the label lines up with
-     the heading and the task rows. */
-  margin-left: calc(-1 * var(--space-2));
+  /* Same box as the add form's input that replaces it: same left edge, same
+     height, and the label starts where typed text will. */
+  height: var(--add-row-height);
   background: none;
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   color: var(--color-text-muted);
-  padding: var(--space-1) var(--space-2);
+  padding: 0 var(--space-2);
   font-size: var(--font-size-meta);
-  min-height: 28px;
 }
 
 .add-task-button:hover {
@@ -300,29 +300,39 @@ body {
 }
 
 :root[data-contrast='high'] .add-task-button {
-  margin-left: 0;
   border-color: var(--color-border-strong);
   color: var(--color-text);
 }
 
+/* One line — input, Add, Cancel — the same height as the button it replaces,
+   so opening it doesn't move anything. The error wraps onto its own line. */
 .add-form {
   margin-top: var(--space-2);
   display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
 }
 
 .add-form input[type='text'] {
-  padding: var(--space-2);
+  flex: 1 1 6rem;
+  min-width: 0;
+  height: var(--add-row-height);
+  padding: 0 var(--space-2);
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-sm);
   background: var(--color-surface);
   color: var(--color-text);
 }
 
+.add-form .field-error {
+  order: 1;
+  flex-basis: 100%;
+}
+
 .add-form-actions {
   display: flex;
-  gap: var(--space-2);
+  gap: var(--space-1);
 }
 
 .add-form input[type='text'][aria-invalid='true'] {
@@ -330,11 +340,12 @@ body {
 }
 
 .add-form-actions button {
+  height: var(--add-row-height);
   border: 1px solid var(--color-border-strong);
   background: var(--color-surface);
   border-radius: var(--radius-sm);
-  padding: var(--space-1) var(--space-3);
-  min-height: 24px;
+  padding: 0 var(--space-3);
+  font-size: var(--font-size-meta);
 }
 
 .add-form-actions button[type='submit'] {
