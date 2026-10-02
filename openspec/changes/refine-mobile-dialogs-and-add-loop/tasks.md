@@ -18,5 +18,5 @@
 ## 4. Integration
 
 - [x] 4.1 Run `npm test` and `npm run test:e2e`; verify no failures in Chromium and WebKit locally
-- [ ] 4.2 Verify the Test workflow passes in all three browsers on the pull request
+- [x] 4.2 Verify the Test workflow passes in all three browsers on the pull request
 - [ ] 4.3 Manual check by the user on a real phone: open a task, tap Notes so the keyboard appears, and confirm Save and Cancel stay visible above it; scroll Settings to the end and confirm the close button stays; scroll the board to the end and confirm there is space under Eliminate
