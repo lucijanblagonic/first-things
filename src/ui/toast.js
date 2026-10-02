@@ -38,7 +38,7 @@ export function showUndoToast(message, onUndo, ms = 5000) {
 
   const undoButton = document.createElement('button');
   undoButton.type = 'button';
-  undoButton.className = 'toast-undo-button';
+  undoButton.className = 'button button-basic toast-undo-button';
   undoButton.dataset.shortcut = 'undo';
   undoButton.textContent = 'Undo';
   undoButton.addEventListener('click', () => {

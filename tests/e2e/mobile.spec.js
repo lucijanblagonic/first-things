@@ -68,6 +68,15 @@ test('the edit dialog fills the screen with its heading and actions pinned', asy
   const save = await page.locator('#edit-save-button').boundingBox();
   expect(save?.height).toBeGreaterThanOrEqual(44);
 
+  // The pinned heading and action bar are separated by space, not lines.
+  const borders = await page.evaluate(() =>
+    ['#edit-dialog-title', '#edit-form .dialog-actions'].map((selector) => {
+      const style = getComputedStyle(/** @type {Element} */ (document.querySelector(selector)));
+      return parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+    }),
+  );
+  expect(borders).toEqual([0, 0]);
+
   // Nothing is pushed off the side: the sheet has no horizontal overflow.
   expect(await dialog.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true);
 });

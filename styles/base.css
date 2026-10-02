@@ -90,6 +90,59 @@ a {
   outline-offset: 2px;
 }
 
+/* Buttons. Every text button is one of three kinds:
+     .button-primary  the main action of a form (filled)
+     .button-outline  an ordinary action (bordered)
+     .button-basic    a quiet action (text only)
+   Icon-only buttons (.icon-button, the ✕ on a task) are separate. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--button-height, 32px);
+  padding: 0 var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--color-text);
+  font-size: var(--font-size-meta);
+  white-space: nowrap;
+}
+
+.button-primary {
+  background: var(--color-inverse-bg);
+  border-color: var(--color-inverse-bg);
+  color: var(--color-inverse-text);
+  font-weight: 600;
+}
+
+.button-primary:hover {
+  opacity: 0.9;
+}
+
+.button-outline {
+  border-color: var(--color-border-strong);
+}
+
+.button-outline:hover {
+  background: var(--color-hover-row);
+}
+
+.button-basic {
+  color: var(--color-text-muted);
+}
+
+.button-basic:hover {
+  background: var(--color-hover-row);
+  color: var(--color-text);
+}
+
+/* High contrast outlines the quiet buttons too. */
+:root[data-contrast='high'] .button-basic {
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+
 /* Checkboxes: drawn rather than native, so the box uses the same outline
    tokens as every other control instead of the browser's own dark border. */
 input[type='checkbox'] {

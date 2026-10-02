@@ -82,36 +82,9 @@ dialog h2:focus {
   flex: 1;
 }
 
-.dialog-actions button {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid var(--color-border-strong);
-  background: var(--color-surface);
-  color: var(--color-text);
-  border-radius: var(--radius-sm);
-  padding: var(--space-2) var(--space-3);
-  min-height: 24px;
-}
-
-.dialog-actions button:hover {
-  background: var(--color-hover-raised);
-}
-
-.dialog-actions button[type='submit']:hover {
-  background: var(--color-inverse-bg);
-  opacity: 0.9;
-}
-
-.dialog-actions button[type='submit'] {
-  background: var(--color-inverse-bg);
-  border-color: var(--color-inverse-bg);
-  color: var(--color-inverse-text);
-  font-weight: 600;
-}
-
-.dialog-actions .secondary-button {
-  border-color: var(--color-border);
-  background: none;
+/* Dialog buttons are a step taller than those on the board. */
+dialog {
+  --button-height: 36px;
 }
 
 /* Settings dialog (design D18, D19). */
@@ -143,7 +116,6 @@ dialog h2:focus {
 
 .settings-section {
   padding: var(--space-4) 0;
-  border-top: 1px solid var(--color-divider);
 }
 
 .settings-section:last-of-type {
@@ -209,25 +181,6 @@ dialog h2:focus {
   color: var(--color-text);
   resize: vertical;
   min-height: 4rem;
-}
-
-.data-row button,
-.data-confirm button,
-.data-paste button {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid var(--color-border-strong);
-  background: var(--color-surface);
-  color: var(--color-text);
-  border-radius: var(--radius-sm);
-  padding: var(--space-2) var(--space-3);
-  min-height: 24px;
-}
-
-.data-row button:hover,
-.data-confirm button:hover,
-.data-paste button:hover {
-  background: var(--color-hover-raised);
 }
 
 #data-status {
@@ -322,9 +275,7 @@ dialog h2:focus {
 }
 
 .shortcut-group + .shortcut-group {
-  margin-top: var(--space-3);
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--color-divider);
+  margin-top: var(--space-5);
 }
 
 .shortcut-group h4 {
@@ -396,22 +347,6 @@ dialog h2:focus {
   padding: var(--space-2) var(--space-3);
 }
 
-.toast-undo-button {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: none;
-  color: var(--color-text);
-  font-weight: 600;
-  min-height: 24px;
-  padding: var(--space-1) var(--space-2);
-}
-
-.toast-undo-button:hover {
-  background: var(--color-hover-raised);
-}
-
 /* The page behind an open dialog doesn't scroll, and scrolling inside a
    dialog doesn't chain to it. */
 html:has(dialog[open]) {
@@ -460,7 +395,6 @@ dialog {
     margin: 0 calc(-1 * var(--space-4)) var(--space-3);
     padding: var(--space-4) var(--space-4) var(--space-3);
     background: var(--color-surface-raised);
-    border-bottom: 1px solid var(--color-divider);
   }
 
   /* Notes take whatever height is left, so the sheet has no dead space. */
@@ -479,7 +413,6 @@ dialog {
     padding: var(--space-3) var(--space-4)
       calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
     background: var(--color-surface-raised);
-    border-top: 1px solid var(--color-divider);
   }
 
   /* Three buttons with their keycaps don't fit a phone's width (the
@@ -490,11 +423,11 @@ dialog {
   }
 
   /* Comfortable touch targets for the sheet's buttons. */
-  .dialog-actions button,
-  .data-row button,
-  .data-confirm button,
-  .data-paste button {
-    min-height: 44px;
+  dialog {
+    --button-height: 44px;
+  }
+
+  dialog .button {
     padding-inline: var(--space-4);
   }
 

@@ -215,12 +215,11 @@ test('Do is the one card with a surface; the other quadrants are see-through, in
   }
 });
 
-test('the delete toast uses the subtle border, not the strong one', async ({ page }) => {
+test('the delete toast has a subtle border and a borderless Undo', async ({ page }) => {
   await page.goto('/');
   await addTask(page, 'do', 'Soon gone');
   await page.locator('#do-list li .task-delete-button').click();
-  const toast = page.locator('.toast');
-  await expect(toast).toBeVisible();
+  await expect(page.locator('.toast')).toBeVisible();
 
   const colors = await page.evaluate(() => {
     const probe = document.createElement('div');
@@ -240,7 +239,88 @@ test('the delete toast uses the subtle border, not the strong one', async ({ pag
   });
   expect(colors.subtle).not.toBe(colors.strong);
   expect(colors.toast).toBe(colors.subtle);
-  expect(colors.undo).toBe(colors.subtle);
+  expect(colors.undo).toMatch(/rgba\(0, 0, 0, 0\)|transparent/);
+});
+
+test('every text button is one of three kinds: primary, outline or basic', async ({ page }) => {
+  await page.goto('/');
+  await addTask(page, 'do', 'Button census');
+  // Bring the toast's Undo and the dialogs' buttons into the document.
+  await addTask(page, 'plan', 'To delete');
+  await page.locator('#plan-list li .task-delete-button').click();
+  await expect(page.locator('.toast')).toBeVisible();
+
+  const census = await page.evaluate(() => {
+    const kinds = ['button-primary', 'button-outline', 'button-basic'];
+    // Icon-only buttons, the ✕ on a task and the "Completed (n)" disclosure are not text buttons.
+    const exempt = '.icon-button, .task-delete-button, .completed-toggle';
+    const strays = [];
+    const seen = new Set();
+    for (const button of document.querySelectorAll('button')) {
+      if (button.matches(exempt)) continue;
+      const own = kinds.filter((kind) => button.classList.contains(kind));
+      if (!button.classList.contains('button') || own.length !== 1) {
+        strays.push(button.id || button.className || button.textContent);
+      } else {
+        seen.add(own[0]);
+      }
+    }
+    const kindOf = (/** @type {string} */ selector) =>
+      kinds.find((kind) => /** @type {Element} */ (document.querySelector(selector)).classList.contains(kind));
+    return {
+      strays,
+      seen: [...seen].sort(),
+      save: kindOf('#edit-save-button'),
+      cancel: kindOf('#edit-cancel-button'),
+      remove: kindOf('#edit-delete-button'),
+      addTask: kindOf('#do-add-button'),
+      undo: kindOf('.toast-undo-button'),
+    };
+  });
+  expect(census.strays).toEqual([]);
+  expect(census.seen).toEqual(['button-basic', 'button-outline', 'button-primary']);
+  expect(census).toMatchObject({
+    save: 'button-primary',
+    cancel: 'button-outline',
+    remove: 'button-basic',
+    addTask: 'button-basic',
+    undo: 'button-basic',
+  });
+});
+
+test('the three button kinds look as named', async ({ page }) => {
+  await page.goto('/');
+  await addTask(page, 'do', 'Open me');
+  await page.click('#do-list li .task-title');
+  await expect(page.locator('#edit-dialog')).toBeVisible();
+  const look = (/** @type {string} */ selector) =>
+    page.locator(selector).evaluate((el) => {
+      const style = getComputedStyle(el);
+      return { background: style.backgroundColor, border: style.borderTopColor, height: el.getBoundingClientRect().height };
+    });
+  const transparent = /rgba\(0, 0, 0, 0\)|transparent/;
+  const save = await look('#edit-save-button');
+  const cancel = await look('#edit-cancel-button');
+  const remove = await look('#edit-delete-button');
+
+  expect(save.background).not.toMatch(transparent); // primary: filled
+  expect(cancel.background).toMatch(transparent); // outline: border only
+  expect(cancel.border).not.toMatch(transparent);
+  expect(remove.background).toMatch(transparent); // basic: text only
+  expect(remove.border).toMatch(transparent);
+  expect(new Set([save.height, cancel.height, remove.height]).size).toBe(1);
+});
+
+test('dialogs have no divider lines', async ({ page }) => {
+  await page.goto('/');
+  await page.click('#settings-button');
+  await expect(page.locator('#settings-dialog')).toBeVisible();
+  const lines = await page.evaluate(() =>
+    [...document.querySelectorAll('#settings-dialog .settings-section, #settings-dialog .shortcut-group, #settings-dialog .settings-dialog-header')]
+      .map((el) => getComputedStyle(el))
+      .filter((style) => parseFloat(style.borderTopWidth) > 0 || parseFloat(style.borderBottomWidth) > 0).length,
+  );
+  expect(lines).toBe(0);
 });
 
 test('quadrant headers show no task count', async ({ page }) => {

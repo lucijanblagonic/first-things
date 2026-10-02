@@ -29,6 +29,15 @@ to the input.
   the white raised card. (Updates the "Do is the one raised quadrant" requirement in
   the unarchived `add-demo-tasks-and-inline-due` change, in place.)
 
+- **Three button styles.** Every text button is primary, outline or basic, defined
+  once. Delete in the edit dialog, "Add task" and the toast's Undo are basic; Cancel
+  and the Data actions are outline; Save, Add and the import confirmations are
+  primary.
+- **No divider lines in dialogs.** Settings sections, shortcut groups and the sheet's
+  pinned heading and actions are separated by spacing only.
+- **Install icons.** The Apple home-screen icon is a square, opaque image, and the
+  manifest lists PNG icons only.
+
 ## Capabilities
 
 ### New Capabilities
@@ -39,6 +48,7 @@ None.
 - `task-management`: adds the small-screen behaviour of the edit dialog.
 - `matrix-board`: adds how the stacked board scrolls on small screens.
 - `keyboard-navigation`: adds the focus loop in the add form.
+- `theming`: adds the three button kinds and the no-divider rule for dialogs.
 
 ## Impact
 

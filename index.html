@@ -6,7 +6,9 @@
   <title>First Things</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="First Things" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#f5f5f5" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#141414" media="(prefers-color-scheme: dark)" />
   <script>
@@ -81,14 +83,14 @@
         <p class="quadrant-subtitle" id="do-subtitle">Urgent and important</p>
       </header>
       <ul class="task-list" id="do-list" aria-label="Do tasks"></ul>
-      <button type="button" class="add-task-button" id="do-add-button" data-shortcut="add">Add task</button>
+      <button type="button" class="button button-basic add-task-button" id="do-add-button" data-shortcut="add">Add task</button>
       <form class="add-form" id="do-add-form" hidden novalidate>
         <label class="visually-hidden" for="do-add-input">New task title for Do</label>
         <input type="text" id="do-add-input" maxlength="200" autocomplete="off" aria-describedby="do-add-error" />
         <p class="field-error" id="do-add-error" hidden>Title is required.</p>
         <div class="add-form-actions">
-          <button type="submit">Add</button>
-          <button type="button" class="cancel-button" id="do-add-cancel">Cancel</button>
+          <button type="submit" class="button button-primary">Add</button>
+          <button type="button" class="button button-outline cancel-button" id="do-add-cancel">Cancel</button>
         </div>
       </form>
       <button type="button" class="completed-toggle" id="do-completed-toggle" aria-expanded="false" hidden>Completed (0)</button>
@@ -102,14 +104,14 @@
         <p class="quadrant-subtitle" id="plan-subtitle">Important but not urgent</p>
       </header>
       <ul class="task-list" id="plan-list" aria-label="Plan tasks"></ul>
-      <button type="button" class="add-task-button" id="plan-add-button" data-shortcut="add">Add task</button>
+      <button type="button" class="button button-basic add-task-button" id="plan-add-button" data-shortcut="add">Add task</button>
       <form class="add-form" id="plan-add-form" hidden novalidate>
         <label class="visually-hidden" for="plan-add-input">New task title for Plan</label>
         <input type="text" id="plan-add-input" maxlength="200" autocomplete="off" aria-describedby="plan-add-error" />
         <p class="field-error" id="plan-add-error" hidden>Title is required.</p>
         <div class="add-form-actions">
-          <button type="submit">Add</button>
-          <button type="button" class="cancel-button" id="plan-add-cancel">Cancel</button>
+          <button type="submit" class="button button-primary">Add</button>
+          <button type="button" class="button button-outline cancel-button" id="plan-add-cancel">Cancel</button>
         </div>
       </form>
       <button type="button" class="completed-toggle" id="plan-completed-toggle" aria-expanded="false" hidden>Completed (0)</button>
@@ -123,14 +125,14 @@
         <p class="quadrant-subtitle" id="limit-subtitle">Urgent but not important</p>
       </header>
       <ul class="task-list" id="limit-list" aria-label="Delegate tasks"></ul>
-      <button type="button" class="add-task-button" id="limit-add-button" data-shortcut="add">Add task</button>
+      <button type="button" class="button button-basic add-task-button" id="limit-add-button" data-shortcut="add">Add task</button>
       <form class="add-form" id="limit-add-form" hidden novalidate>
         <label class="visually-hidden" for="limit-add-input">New task title for Delegate</label>
         <input type="text" id="limit-add-input" maxlength="200" autocomplete="off" aria-describedby="limit-add-error" />
         <p class="field-error" id="limit-add-error" hidden>Title is required.</p>
         <div class="add-form-actions">
-          <button type="submit">Add</button>
-          <button type="button" class="cancel-button" id="limit-add-cancel">Cancel</button>
+          <button type="submit" class="button button-primary">Add</button>
+          <button type="button" class="button button-outline cancel-button" id="limit-add-cancel">Cancel</button>
         </div>
       </form>
       <button type="button" class="completed-toggle" id="limit-completed-toggle" aria-expanded="false" hidden>Completed (0)</button>
@@ -144,14 +146,14 @@
         <p class="quadrant-subtitle" id="drop-subtitle">Not urgent and not important</p>
       </header>
       <ul class="task-list" id="drop-list" aria-label="Eliminate tasks"></ul>
-      <button type="button" class="add-task-button" id="drop-add-button" data-shortcut="add">Add task</button>
+      <button type="button" class="button button-basic add-task-button" id="drop-add-button" data-shortcut="add">Add task</button>
       <form class="add-form" id="drop-add-form" hidden novalidate>
         <label class="visually-hidden" for="drop-add-input">New task title for Eliminate</label>
         <input type="text" id="drop-add-input" maxlength="200" autocomplete="off" aria-describedby="drop-add-error" />
         <p class="field-error" id="drop-add-error" hidden>Title is required.</p>
         <div class="add-form-actions">
-          <button type="submit">Add</button>
-          <button type="button" class="cancel-button" id="drop-add-cancel">Cancel</button>
+          <button type="submit" class="button button-primary">Add</button>
+          <button type="button" class="button button-outline cancel-button" id="drop-add-cancel">Cancel</button>
         </div>
       </form>
       <button type="button" class="completed-toggle" id="drop-completed-toggle" aria-expanded="false" hidden>Completed (0)</button>
@@ -185,10 +187,10 @@
         </select>
       </div>
       <div class="dialog-actions">
-        <button type="button" id="edit-delete-button" class="secondary-button">Delete</button>
+        <button type="button" id="edit-delete-button" class="button button-basic">Delete</button>
         <span class="dialog-actions-spacer"></span>
-        <button type="button" id="edit-cancel-button" data-shortcut="cancel">Cancel</button>
-        <button type="submit" id="edit-save-button" data-shortcut="save">Save</button>
+        <button type="button" id="edit-cancel-button" class="button button-outline" data-shortcut="cancel">Cancel</button>
+        <button type="submit" id="edit-save-button" class="button button-primary" data-shortcut="save">Save</button>
       </div>
     </form>
   </dialog>
@@ -246,25 +248,25 @@
       <h3 id="settings-data-heading">Data</h3>
       <div class="data-actions" id="data-actions">
         <div class="data-row">
-          <button type="button" id="export-button" class="secondary-button">Export file</button>
-          <button type="button" id="copy-button" class="secondary-button">Copy</button>
+          <button type="button" id="export-button" class="button button-outline">Export file</button>
+          <button type="button" id="copy-button" class="button button-outline">Copy</button>
         </div>
         <div class="data-row">
-          <button type="button" id="import-button" class="secondary-button">Import file</button>
-          <button type="button" id="paste-button" class="secondary-button">Paste</button>
+          <button type="button" id="import-button" class="button button-outline">Import file</button>
+          <button type="button" id="paste-button" class="button button-outline">Paste</button>
         </div>
       </div>
       <div class="data-paste" id="paste-area" hidden>
         <label for="paste-text">Paste your board here</label>
         <textarea id="paste-text" rows="4" spellcheck="false"></textarea>
-        <button type="button" id="paste-import-button" class="secondary-button">Import pasted text</button>
-        <button type="button" id="paste-cancel-button" class="cancel-button">Cancel</button>
+        <button type="button" id="paste-import-button" class="button button-primary">Import pasted text</button>
+        <button type="button" id="paste-cancel-button" class="button button-outline cancel-button">Cancel</button>
       </div>
       <input type="file" id="import-file" accept="application/json,.json" class="visually-hidden" tabindex="-1" aria-hidden="true" />
       <div class="data-confirm" id="import-confirm" role="group" aria-labelledby="import-confirm-text" hidden>
         <p id="import-confirm-text"></p>
-        <button type="button" id="import-confirm-button" class="secondary-button">Replace board</button>
-        <button type="button" id="import-cancel-button" class="cancel-button">Cancel</button>
+        <button type="button" id="import-confirm-button" class="button button-primary">Replace board</button>
+        <button type="button" id="import-cancel-button" class="button button-outline cancel-button">Cancel</button>
       </div>
       <p class="settings-hint">Export file and Copy take all your tasks out as a file or as text on the clipboard. Import file and Paste replace this board with the tasks you bring in.</p>
       <p class="settings-hint" id="data-status" role="status"></p>

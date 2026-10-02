@@ -75,7 +75,8 @@ npm test           # unit tests (node:test) for src/core/*
 npm run test:e2e    # Playwright end-to-end tests (Chromium, Firefox, WebKit)
 ```
 
-The PNG icons in `icons/` are rendered from the SVGs next to them with
+The PNG icons in `icons/` are rendered from the SVGs next to them (the Apple
+home-screen icon from the square, opaque `icon-square.svg`) with
 `node scripts/render-icons.mjs` and committed; re-run it after editing an SVG.
 
 `test:e2e` starts its own local server automatically (see
