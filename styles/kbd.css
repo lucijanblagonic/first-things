@@ -1,0 +1,71 @@
+/* Keycap shortcut hints (design D15). */
+
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.3rem;
+  border: 1px solid var(--color-kbd-border);
+  border-radius: 4px;
+  background: var(--color-kbd-bg);
+  color: var(--color-kbd-text);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-kbd);
+  font-weight: 500;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.kbd-group {
+  display: inline-flex;
+  gap: 2px;
+}
+
+[data-shortcut] > .kbd-group {
+  margin-left: 0.5rem;
+}
+
+/* On inverted (primary) buttons the keycap follows the button's text color. */
+.dialog-actions button[type='submit'] .kbd {
+  border-color: color-mix(in srgb, currentColor 45%, transparent);
+  background: transparent;
+  color: inherit;
+}
+
+.quadrant-key {
+  min-width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* Single-key shortcuts off: hide their hints. The quadrant key stays as a
+   plain priority number because it also carries that meaning. */
+:root[data-single-keys='off'] .kbd-group[data-single-key] {
+  display: none;
+}
+
+:root[data-single-keys='off'] .quadrant-key {
+  min-width: 0;
+  padding: 0;
+  border-color: transparent;
+  background: none;
+}
+
+@media (hover: none) {
+  [data-shortcut] > .kbd-group,
+  .kbd-sentence {
+    display: none;
+  }
+
+  .quadrant-key {
+    min-width: 0;
+    padding: 0;
+    border-color: transparent;
+    background: none;
+  }
+}

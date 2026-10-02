@@ -1,0 +1,89 @@
+/* Tooltips for icon-only buttons (design D22). Visual only: the button's
+   aria-label carries the same text, so the tooltip is aria-hidden. Shown on
+   hover and keyboard focus, hoverable, dismissible with Escape (WCAG 1.4.13). */
+
+.tooltip-anchor {
+  position: relative;
+  display: inline-flex;
+}
+
+.tooltip {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 950;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--color-inverse-bg);
+  color: var(--color-inverse-text);
+  font-size: var(--font-size-meta);
+  line-height: 1.3;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 120ms ease,
+    visibility 0s linear 120ms;
+}
+
+/* Invisible bridge over the gap so moving the pointer onto the tooltip keeps it open. */
+.tooltip::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -8px;
+  height: 8px;
+}
+
+.tooltip-anchor:hover .tooltip,
+.tooltip-anchor:has(:focus-visible) .tooltip {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition:
+    opacity 120ms ease 150ms,
+    visibility 0s linear 150ms;
+}
+
+.tooltip-anchor:has(:focus-visible) .tooltip {
+  transition: none;
+}
+
+.tooltip-anchor[data-dismissed] .tooltip {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: none;
+}
+
+.tooltip-keys {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.tooltip .kbd {
+  border-color: color-mix(in srgb, currentColor 45%, transparent);
+  background: transparent;
+  color: inherit;
+}
+
+/* The modifier variant (⌘,) is advertised only while single-key shortcuts are off. */
+.tooltip-keys .kbd-mod-only {
+  display: none;
+}
+
+:root[data-single-keys='off'] .tooltip-keys .kbd-mod-only {
+  display: inline-flex;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tooltip,
+  .tooltip-anchor:hover .tooltip {
+    transition: none;
+  }
+}

@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Decision Matrix</title>
+  <script>
+    (function () {
+      try {
+        var pref = window.localStorage.getItem('decision-matrix:theme');
+        if (pref === 'light' || pref === 'dark') {
+          document.documentElement.setAttribute('data-theme', pref);
+        }
+        if (window.localStorage.getItem('decision-matrix:shortcuts') === 'off') {
+          document.documentElement.setAttribute('data-single-keys', 'off');
+        }
+        if (window.localStorage.getItem('decision-matrix:layout') === 'urgent-left') {
+          document.documentElement.setAttribute('data-layout', 'urgent-left');
+        }
+      } catch (e) {
+        // localStorage unavailable; fall back to prefers-color-scheme only.
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="styles/tokens.css" />
+  <link rel="stylesheet" href="styles/base.css" />
+  <link rel="stylesheet" href="styles/board.css" />
+  <link rel="stylesheet" href="styles/task.css" />
+  <link rel="stylesheet" href="styles/dialog.css" />
+  <link rel="stylesheet" href="styles/kbd.css" />
+  <link rel="stylesheet" href="styles/tooltip.css" />
+</head>
+<body>
+  <a class="skip-link visually-hidden" href="#main">Skip to board</a>
+
+  <header class="app-header">
+    <h1 class="app-title">Decision Matrix</h1>
+    <div class="app-header-controls">
+      <!-- Icons: Lucide (ISC license), https://lucide.dev -->
+      <span class="tooltip-anchor">
+        <button type="button" id="theme-button" class="icon-button" data-pref="system" aria-label="Theme: System">
+          <svg class="icon icon-monitor" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+          <svg class="icon icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+          <svg class="icon icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </button>
+        <span class="tooltip" aria-hidden="true"><span class="tooltip-text" id="theme-tooltip-text">Theme: System</span></span>
+      </span>
+      <span class="tooltip-anchor">
+        <button type="button" id="settings-button" class="icon-button" aria-label="Settings" aria-haspopup="dialog">
+          <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+        <span class="tooltip" aria-hidden="true"><span class="tooltip-text">Settings</span><span class="tooltip-keys" id="settings-tooltip-keys"></span></span>
+      </span>
+    </div>
+  </header>
+
+  <div id="banner-container" class="banner-container" role="status" aria-live="polite"></div>
+
+  <main id="main" class="board" aria-label="Task matrix">
+    <div class="axis-header axis-col-not-urgent" aria-hidden="true">Not urgent</div>
+    <div class="axis-header axis-col-urgent" aria-hidden="true">Urgent</div>
+    <div class="axis-header axis-row-top" aria-hidden="true">Important</div>
+    <div class="axis-header axis-row-bottom" aria-hidden="true">Not important</div>
+
+    <section class="quadrant quadrant-do" id="quadrant-do" data-quadrant="do" aria-label="Do — Urgent and important">
+      <header class="quadrant-header">
+        <kbd class="kbd quadrant-key" data-single-key aria-hidden="true">1</kbd>
+        <h2 class="quadrant-title" id="do-heading">Do</h2>
+        <span class="quadrant-count" id="do-count" aria-hidden="true">0</span>
+        <p class="quadrant-subtitle" id="do-subtitle">Urgent and important</p>
+      </header>
+      <ul class="task-list" id="do-list" aria-label="Do tasks"></ul>
+      <p class="quadrant-empty" id="do-empty" hidden></p>
+      <button type="button" class="add-task-button" id="do-add-button" data-shortcut="add">Add task</button>
+      <form class="add-form" id="do-add-form" hidden novalidate>
+        <label class="visually-hidden" for="do-add-input">New task title for Do</label>
+        <input type="text" id="do-add-input" maxlength="200" autocomplete="off" aria-describedby="do-add-error" />
+        <p class="field-error" id="do-add-error" hidden>Title is required.</p>
+        <div class="add-form-actions">
+          <button type="submit">Add</button>
+          <button type="button" class="cancel-button" id="do-add-cancel">Cancel</button>
+        </div>
+      </form>
+      <button type="button" class="completed-toggle" id="do-completed-toggle" aria-expanded="false" hidden>Completed (0)</button>
+      <ul class="archived-list" id="do-archived-list" aria-label="Do completed tasks" hidden></ul>
+    </section>
+
+    <section class="quadrant quadrant-plan" id="quadrant-plan" data-quadrant="plan" aria-label="Plan — Important but not urgent">
+      <header class="quadrant-header">
+        <kbd class="kbd quadrant-key" data-single-key aria-hidden="true">2</kbd>
+        <h2 class="quadrant-title" id="plan-heading">Plan</h2>
+        <span class="quadrant-count" id="plan-count" aria-hidden="true">0</span>
+        <p class="quadrant-subtitle" id="plan-subtitle">Important but not urgent</p>
+      </header>
+      <ul class="task-list" id="plan-list" aria-label="Plan tasks"></ul>
+      <p class="quadrant-empty" id="plan-empty" hidden></p>
+      <button type="button" class="add-task-button" id="plan-add-button" data-shortcut="add">Add task</button>
+      <form class="add-form" id="plan-add-form" hidden novalidate>
+        <label class="visually-hidden" for="plan-add-input">New task title for Plan</label>
+        <input type="text" id="plan-add-input" maxlength="200" autocomplete="off" aria-describedby="plan-add-error" />
+        <p class="field-error" id="plan-add-error" hidden>Title is required.</p>
+        <div class="add-form-actions">
+          <button type="submit">Add</button>
+          <button type="button" class="cancel-button" id="plan-add-cancel">Cancel</button>
+        </div>
+      </form>
+      <button type="button" class="completed-toggle" id="plan-completed-toggle" aria-expanded="false" hidden>Completed (0)</button>
+      <ul class="archived-list" id="plan-archived-list" aria-label="Plan completed tasks" hidden></ul>
+    </section>
+
+    <section class="quadrant quadrant-limit" id="quadrant-limit" data-quadrant="limit" aria-label="Delegate — Urgent but not important">
+      <header class="quadrant-header">
+        <kbd class="kbd quadrant-key" data-single-key aria-hidden="true">3</kbd>
+        <h2 class="quadrant-title" id="limit-heading">Delegate</h2>
+        <span class="quadrant-count" id="limit-count" aria-hidden="true">0</span>
+        <p class="quadrant-subtitle" id="limit-subtitle">Urgent but not important</p>
+      </header>
+      <ul class="task-list" id="limit-list" aria-label="Delegate tasks"></ul>
+      <p class="quadrant-empty" id="limit-empty" hidden></p>
+      <button type="button" class="add-task-button" id="limit-add-button" data-shortcut="add">Add task</button>
+      <form class="add-form" id="limit-add-form" hidden novalidate>
+        <label class="visually-hidden" for="limit-add-input">New task title for Delegate</label>
+        <input type="text" id="limit-add-input" maxlength="200" autocomplete="off" aria-describedby="limit-add-error" />
+        <p class="field-error" id="limit-add-error" hidden>Title is required.</p>
+        <div class="add-form-actions">
+          <button type="submit">Add</button>
+          <button type="button" class="cancel-button" id="limit-add-cancel">Cancel</button>
+        </div>
+      </form>
+      <button type="button" class="completed-toggle" id="limit-completed-toggle" aria-expanded="false" hidden>Completed (0)</button>
+      <ul class="archived-list" id="limit-archived-list" aria-label="Delegate completed tasks" hidden></ul>
+    </section>
+
+    <section class="quadrant quadrant-drop" id="quadrant-drop" data-quadrant="drop" aria-label="Eliminate — Not urgent and not important">
+      <header class="quadrant-header">
+        <kbd class="kbd quadrant-key" data-single-key aria-hidden="true">4</kbd>
+        <h2 class="quadrant-title" id="drop-heading">Eliminate</h2>
+        <span class="quadrant-count" id="drop-count" aria-hidden="true">0</span>
+        <p class="quadrant-subtitle" id="drop-subtitle">Not urgent and not important</p>
+      </header>
+      <ul class="task-list" id="drop-list" aria-label="Eliminate tasks"></ul>
+      <p class="quadrant-empty" id="drop-empty" hidden></p>
+      <button type="button" class="add-task-button" id="drop-add-button" data-shortcut="add">Add task</button>
+      <form class="add-form" id="drop-add-form" hidden novalidate>
+        <label class="visually-hidden" for="drop-add-input">New task title for Eliminate</label>
+        <input type="text" id="drop-add-input" maxlength="200" autocomplete="off" aria-describedby="drop-add-error" />
+        <p class="field-error" id="drop-add-error" hidden>Title is required.</p>
+        <div class="add-form-actions">
+          <button type="submit">Add</button>
+          <button type="button" class="cancel-button" id="drop-add-cancel">Cancel</button>
+        </div>
+      </form>
+      <button type="button" class="completed-toggle" id="drop-completed-toggle" aria-expanded="false" hidden>Completed (0)</button>
+      <ul class="archived-list" id="drop-archived-list" aria-label="Eliminate completed tasks" hidden></ul>
+    </section>
+  </main>
+
+  <dialog id="edit-dialog" aria-labelledby="edit-dialog-title">
+    <form method="dialog" id="edit-form">
+      <h2 id="edit-dialog-title">Edit task</h2>
+      <div class="field">
+        <label for="edit-title">Title</label>
+        <input type="text" id="edit-title" name="title" maxlength="200" required aria-describedby="edit-title-error" />
+        <p class="field-error" id="edit-title-error" hidden>Title is required.</p>
+      </div>
+      <div class="field">
+        <label for="edit-notes">Notes</label>
+        <textarea id="edit-notes" name="notes" maxlength="5000" rows="4"></textarea>
+      </div>
+      <div class="field">
+        <label for="edit-due">Due date</label>
+        <input type="date" id="edit-due" name="due" />
+      </div>
+      <div class="field">
+        <label for="edit-quadrant">Quadrant</label>
+        <select id="edit-quadrant" name="quadrant">
+          <option value="do">Do — Urgent and important</option>
+          <option value="plan">Plan — Important but not urgent</option>
+          <option value="limit">Delegate — Urgent but not important</option>
+          <option value="drop">Eliminate — Not urgent and not important</option>
+        </select>
+      </div>
+      <div class="dialog-actions">
+        <button type="button" id="edit-delete-button" class="secondary-button">Delete</button>
+        <span class="dialog-actions-spacer"></span>
+        <button type="button" id="edit-cancel-button" data-shortcut="cancel">Cancel</button>
+        <button type="submit" id="edit-save-button" data-shortcut="save">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="settings-dialog" class="settings-dialog" aria-labelledby="settings-dialog-title">
+    <div class="settings-dialog-header">
+      <h2 id="settings-dialog-title">Settings</h2>
+      <button type="button" id="settings-close-button" class="icon-button" aria-label="Close settings">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+
+    <section class="settings-section" aria-labelledby="settings-layout-heading">
+      <h3 id="settings-layout-heading">Layout</h3>
+      <fieldset class="layout-options">
+        <legend>Urgent column</legend>
+        <label class="layout-option">
+          <input type="radio" name="layout" value="urgent-right" />
+          <span class="layout-diagram" aria-hidden="true"><span>2</span><span class="is-do">1</span><span>4</span><span>3</span></span>
+          <span class="layout-option-text">
+            <span class="layout-option-label">Right</span>
+            <span class="layout-option-hint">Do top-right (default)</span>
+          </span>
+        </label>
+        <label class="layout-option">
+          <input type="radio" name="layout" value="urgent-left" />
+          <span class="layout-diagram" aria-hidden="true"><span class="is-do">1</span><span>2</span><span>3</span><span>4</span></span>
+          <span class="layout-option-text">
+            <span class="layout-option-label">Left</span>
+            <span class="layout-option-hint">Do top-left (classic Eisenhower)</span>
+          </span>
+        </label>
+      </fieldset>
+    </section>
+
+    <section class="settings-section" aria-labelledby="settings-keyboard-heading">
+      <h3 id="settings-keyboard-heading">Keyboard</h3>
+      <div class="field checkbox-field">
+        <input type="checkbox" id="single-key-shortcuts-toggle" aria-describedby="single-key-shortcuts-hint" />
+        <label for="single-key-shortcuts-toggle">Single-key shortcuts</label>
+      </div>
+      <p class="settings-hint" id="single-key-shortcuts-hint">Shortcuts like 1–4, N, E, X and ?. Turn off if they clash with your screen reader or voice control.</p>
+    </section>
+
+    <section class="settings-section" aria-labelledby="settings-shortcuts-heading">
+      <h3 id="settings-shortcuts-heading">Shortcuts</h3>
+      <div id="settings-shortcuts"></div>
+    </section>
+  </dialog>
+
+  <div id="toast-container" class="toast-container"></div>
+  <div id="live-region" class="visually-hidden" aria-live="polite"></div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
