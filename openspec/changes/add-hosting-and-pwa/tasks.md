@@ -63,10 +63,10 @@
 
 ## 7. Go live
 
-- [ ] 7.1 Pre-flight before going public: run a secret scan over the full history (`git log -p --all` searched for key/token/password patterns) and list author emails with `git log --all --format='%an <%ae>' | sort -u`. Report the result to the user and stop if any secret is found or if the author email is one the user does not want public (design Risks)
+- [x] 7.1 Pre-flight before going public: run a secret scan over the full history (`git log -p --all` searched for key/token/password patterns) and list author emails with `git log --all --format='%an <%ae>' | sort -u`. Report the result to the user and stop if any secret is found or if the author email is one the user does not want public (design Risks)
 - [x] 7.2 Commit the change on `feat/hosting-and-pwa` with a conventional commit message, push the branch, and verify the Test workflow passes for it
-- [ ] 7.3 Make the repository public with `gh repo edit lucijanblagonic/productivity-decision-matrix --visibility public --accept-visibility-change-consequences`; verify `gh repo view --json visibility` reports `PUBLIC`
-- [ ] 7.4 Enable Pages with GitHub Actions as the source: `gh api -X POST repos/lucijanblagonic/productivity-decision-matrix/pages -f build_type=workflow`; verify `gh api repos/lucijanblagonic/productivity-decision-matrix/pages --jq .build_type` prints `workflow`
+- [x] 7.3 Make the repository public with `gh repo edit lucijanblagonic/productivity-decision-matrix --visibility public --accept-visibility-change-consequences`; verify `gh repo view --json visibility` reports `PUBLIC`
+- [x] 7.4 Enable Pages with GitHub Actions as the source: `gh api -X POST repos/lucijanblagonic/productivity-decision-matrix/pages -f build_type=workflow`; verify `gh api repos/lucijanblagonic/productivity-decision-matrix/pages --jq .build_type` prints `workflow`
 - [ ] 7.5 Merge `feat/hosting-and-pwa` into `main` (fast-forward) and push; verify with `gh run list --limit 4` that both "Deploy to GitHub Pages" and "Test" complete with `success`
 - [ ] 7.6 Verify the live site: `curl -s -o /dev/null -w '%{http_code}'` returns 200 for `https://lucijanblagonic.github.io/productivity-decision-matrix/` and for `manifest.webmanifest`, `sw.js`, `src/main.js`, `styles/tokens.css` and `icons/icon-512.png` under that path
 - [ ] 7.7 Open the live URL in Chrome via the browser tooling: verify the board renders, the console has no errors, and DevTools → Application shows the service worker activated and the manifest as installable with no warnings
