@@ -16,9 +16,13 @@ does not stand out where the eye reads first.
   feature. They are ordinary tasks and are seeded only once: after they are deleted,
   or after any board has been saved, they do not come back.
 
-- Emphasise the Do quadrant as the one raised card: it keeps the bright surface and
-  gets a shadow, while the other three quadrants sit flat on a slightly dimmer
-  surface. No outline is used, so the emphasis cannot be mistaken for focus.
+- Quadrant surfaces step down with priority. Do is the one raised card: a bright
+  surface with a shadow. Plan and Delegate are see-through outlines on the page.
+  Eliminate is dimmed. No outline is used for emphasis, so it cannot be mistaken for
+  focus.
+- Remove the task count from each quadrant header.
+- Remove the "No tasks yet" hint from empty quadrants; an empty quadrant shows its
+  heading and the "Add task" button.
 
 ## Capabilities
 
@@ -29,6 +33,8 @@ None.
 ### Modified Capabilities
 - `task-management`: adds requirements for where the due date is shown and for the
   example tasks on a first visit.
+- `matrix-board`: the quadrant header no longer shows a count and an empty quadrant
+  no longer shows a hint.
 
 The "most important quadrant is emphasised" scenario lives in the unarchived
 `refine-header-and-settings` delta for `matrix-board`; its wording is updated in place
@@ -43,8 +49,11 @@ quadrants; those scenarios are updated in place to mention the example tasks.
   separate meta row is removed).
 - New `src/core/demo.js`; `src/core/store.js` (optional `seedTasks`), `src/main.js`,
   `sw.js` (precache list).
-- `styles/tokens.css`, `styles/board.css`, `styles/task.css` (raised Do card, flat
-  surface for the other quadrants, row hover as a translucent wash).
+- `styles/tokens.css`, `styles/board.css`, `styles/task.css` (raised Do card,
+  see-through Plan and Delegate, dimmed Eliminate, row hover and drop target as a
+  translucent wash).
+- `index.html`, `src/ui/render.js`, `styles/board.css`, `styles/kbd.css` (count and
+  empty hint removed).
 - Tests: new `tests/e2e/demo.spec.js`, `tests/unit/demo.test.js`; store tests;
   `playwright.config.js` now starts every other spec from an already-saved empty
   board so they are not affected by the examples.

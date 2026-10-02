@@ -57,8 +57,7 @@
 }
 
 @media (hover: none) {
-  [data-shortcut] > .kbd-group,
-  .kbd-sentence {
+  [data-shortcut] > .kbd-group {
     display: none;
   }
 

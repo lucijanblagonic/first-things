@@ -29,10 +29,13 @@
   --color-hover: var(--gray-2);
   /* Row hover as a translucent wash, so it shows on any card surface. */
   --color-hover-row: color-mix(in srgb, var(--gray-10) 6%, transparent);
-  /* The Do quadrant is a raised card; the other three sit flat (board.css). */
-  --color-surface-flat: var(--gray-1);
+  /* Quadrant surfaces step down with priority (board.css): Do is a raised
+     bright card, Plan and Delegate are see-through outlines on the page, and
+     Eliminate is dimmed. */
   --color-surface-do: var(--gray-0);
-  --color-border-flat: var(--gray-3);
+  --color-surface-flat: transparent;
+  --color-border-flat: var(--gray-4);
+  --color-surface-dim: color-mix(in srgb, var(--gray-3) 75%, var(--gray-2));
   --shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.1), 0 10px 30px rgba(0, 0, 0, 0.16);
   --color-border: var(--gray-4);
   --color-border-strong: var(--gray-6);
@@ -52,7 +55,6 @@
   /* Raised surfaces (dialogs, toasts) and keycaps — design D23. */
   --color-hover-raised: var(--gray-2);
   --color-moved: var(--gray-4);
-  --color-drop-target: var(--gray-2);
   --color-divider: var(--gray-3);
   --color-kbd-bg: var(--gray-0);
   --color-kbd-border: var(--gray-4);
@@ -96,8 +98,9 @@
     --color-surface-raised: var(--gray-10);
     --color-hover: var(--gray-10);
     --color-hover-row: color-mix(in srgb, var(--gray-2) 8%, transparent);
-    --color-surface-flat: color-mix(in srgb, var(--gray-11) 45%, var(--gray-12));
-    --color-border-flat: var(--gray-10);
+    --color-surface-flat: transparent;
+    --color-border-flat: var(--gray-9);
+    --color-surface-dim: color-mix(in srgb, var(--gray-12) 55%, black);
     /* Shadows barely show on a dark page, so Do is also a step lighter. */
     --color-surface-do: color-mix(in srgb, var(--gray-10) 70%, var(--gray-11));
     --shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.6), 0 12px 32px rgba(0, 0, 0, 0.7);
@@ -111,7 +114,6 @@
     --color-scrollbar: var(--gray-8);
     --color-hover-raised: var(--gray-9);
     --color-moved: var(--gray-8);
-    --color-drop-target: var(--gray-10);
     --color-divider: var(--gray-8);
     --color-kbd-bg: var(--gray-9);
     --color-kbd-border: var(--gray-7);
@@ -139,8 +141,9 @@
   --color-surface-raised: var(--gray-10);
   --color-hover: var(--gray-10);
   --color-hover-row: color-mix(in srgb, var(--gray-2) 8%, transparent);
-  --color-surface-flat: color-mix(in srgb, var(--gray-11) 45%, var(--gray-12));
-  --color-border-flat: var(--gray-10);
+  --color-surface-flat: transparent;
+  --color-border-flat: var(--gray-9);
+  --color-surface-dim: color-mix(in srgb, var(--gray-12) 55%, black);
   /* Shadows barely show on a dark page, so Do is also a step lighter. */
   --color-surface-do: color-mix(in srgb, var(--gray-10) 70%, var(--gray-11));
   --shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.6), 0 12px 32px rgba(0, 0, 0, 0.7);
@@ -154,7 +157,6 @@
   --color-scrollbar: var(--gray-8);
   --color-hover-raised: var(--gray-9);
   --color-moved: var(--gray-8);
-  --color-drop-target: var(--gray-10);
   --color-divider: var(--gray-8);
   --color-kbd-bg: var(--gray-9);
   --color-kbd-border: var(--gray-7);

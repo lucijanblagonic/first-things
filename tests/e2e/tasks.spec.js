@@ -76,14 +76,11 @@ test('complete and uncomplete a task', async ({ page }) => {
   await page.fill('#do-add-input', 'Task A');
   await page.keyboard.press('Enter');
 
-  await expect(page.locator('#do-count')).toHaveText('1');
   await page.locator('#do-list li .task-checkbox').check();
   await expect(page.locator('#do-list li')).toHaveClass(/task-item-completed/);
-  await expect(page.locator('#do-count')).toHaveText('0');
 
   await page.locator('#do-list li .task-checkbox').uncheck();
   await expect(page.locator('#do-list li')).not.toHaveClass(/task-item-completed/);
-  await expect(page.locator('#do-count')).toHaveText('1');
 });
 
 test('delete a task with undo', async ({ page }) => {

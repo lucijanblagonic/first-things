@@ -199,8 +199,8 @@ body {
   padding: var(--space-4);
 }
 
-/* Do is the one raised card: the full surface colour and a shadow, while the
-   other three sit flat. No outline, so it can't be mistaken for focus, and
+/* Do is the one raised card: the full surface colour and a shadow, while
+   Plan and Delegate are see-through and Eliminate is dimmed. No outline, so it can't be mistaken for focus, and
    the same border width as the others, so its content lines up with theirs. */
 .quadrant-do {
   --quadrant-area: do;
@@ -227,13 +227,15 @@ body {
   --quadrant-area: limit;
 }
 
+/* Eliminate, the lowest priority, recedes into a dimmer surface. */
 .quadrant-drop {
   --quadrant-area: drop;
+  background: var(--color-surface-dim);
 }
 
 .quadrant-header {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr;
   align-items: center;
   column-gap: var(--space-2);
   row-gap: 2px;
@@ -258,13 +260,6 @@ body {
   font-size: var(--font-size-quadrant-subtitle);
 }
 
-.quadrant-count {
-  justify-self: end;
-  color: var(--color-text-muted);
-  font-variant-numeric: tabular-nums;
-  font-size: var(--font-size-meta);
-}
-
 .task-list {
   flex: 1;
   min-height: 3rem;
@@ -278,13 +273,6 @@ body {
   margin: 0 calc(-1 * var(--space-2));
   padding: var(--space-1) 0;
   scrollbar-color: var(--color-scrollbar) transparent;
-}
-
-.quadrant-empty {
-  color: var(--color-text-muted);
-  font-size: var(--font-size-meta);
-  padding: var(--space-2) 0;
-  margin: 0;
 }
 
 .add-task-button {

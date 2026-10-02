@@ -6,11 +6,10 @@
  */
 
 import { QUADRANTS, getQuadrant } from '../core/quadrants.js';
-import { activeTasks, archivedTasks, openCount, isArchived } from '../core/selectors.js';
+import { activeTasks, archivedTasks, isArchived } from '../core/selectors.js';
 import { validateTitle } from '../core/task.js';
 import { msUntilNextLocalMidnight } from '../core/dates.js';
 import { buildTaskItem } from './task-item.js';
-import { createKeycap } from './keyboard.js';
 
 /**
  * @param {{ store: import('../core/store.js').ReturnType, now: () => Date, afterRender?: (state: any) => void }} options
@@ -36,32 +35,21 @@ export function createRenderer({ store, now, afterRender }) {
    * @param {Date} currentTime
    */
   function renderQuadrant(quadrantId, tasks, currentTime) {
-    const countEl = document.getElementById(`${quadrantId}-count`);
     const listEl = /** @type {HTMLUListElement} */ (document.getElementById(`${quadrantId}-list`));
-    const emptyEl = document.getElementById(`${quadrantId}-empty`);
     const completedToggle = /** @type {HTMLButtonElement} */ (
       document.getElementById(`${quadrantId}-completed-toggle`)
     );
     const archivedListEl = /** @type {HTMLUListElement} */ (
       document.getElementById(`${quadrantId}-archived-list`)
     );
-    if (!countEl || !listEl || !emptyEl || !completedToggle || !archivedListEl) return;
+    if (!listEl || !completedToggle || !archivedListEl) return;
 
     const active = activeTasks(tasks, quadrantId, currentTime);
     const archived = archivedTasks(tasks, quadrantId, currentTime);
 
-    countEl.textContent = String(openCount(tasks, quadrantId));
-
     const listScrollTop = listEl.scrollTop;
     listEl.replaceChildren(...active.map((t) => buildTaskItem(t, currentTime)));
     listEl.scrollTop = listScrollTop;
-
-    if (active.length === 0) {
-      emptyEl.hidden = false;
-      renderEmptyHint(emptyEl);
-    } else {
-      emptyEl.hidden = true;
-    }
 
     if (archived.length === 0) {
       completedToggle.hidden = true;
@@ -79,20 +67,6 @@ export function createRenderer({ store, now, afterRender }) {
       archivedListEl.replaceChildren(...archived.map((t) => buildTaskItem(t, currentTime)));
       archivedListEl.scrollTop = archivedScrollTop;
     }
-  }
-
-  /** @param {HTMLElement} emptyEl */
-  function renderEmptyHint(emptyEl) {
-    const singleKeysOn = document.documentElement.dataset.singleKeys !== 'off';
-    if (!singleKeysOn) {
-      emptyEl.replaceChildren('No tasks yet. Use “Add task” to add one.');
-      return;
-    }
-    // The keyboard sentence is hidden on touch devices (styles/kbd.css).
-    const keyboardHint = document.createElement('span');
-    keyboardHint.className = 'kbd-sentence';
-    keyboardHint.append(' Press ', createKeycap('N'), ' to add one.');
-    emptyEl.replaceChildren('No tasks yet.', keyboardHint);
   }
 
   return {

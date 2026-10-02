@@ -179,27 +179,51 @@ test('Do is emphasised without shifting its content relative to its neighbour', 
   expect(widths[0]).toBe(widths[1]);
 });
 
-test('Do is a raised card and the other quadrants are flat, in both themes', async ({ page }) => {
+test('quadrant surfaces step down with priority, in both themes', async ({ page }) => {
   for (const colorScheme of /** @type {const} */ (['light', 'dark'])) {
     await page.emulateMedia({ colorScheme });
     await page.goto('/');
     const cards = await page.evaluate(() =>
-      ['do', 'plan', 'limit', 'drop'].map((id) => {
-        const style = getComputedStyle(/** @type {Element} */ (document.getElementById(`quadrant-${id}`)));
-        return { shadow: style.boxShadow, background: style.backgroundColor };
-      }),
+      Object.fromEntries(
+        ['do', 'plan', 'limit', 'drop'].map((id) => {
+          const style = getComputedStyle(/** @type {Element} */ (document.getElementById(`quadrant-${id}`)));
+          return [id, { shadow: style.boxShadow, background: style.backgroundColor, outline: style.outlineStyle }];
+        }),
+      ),
     );
-    const [doCard, ...others] = cards;
-    expect(doCard.shadow, colorScheme).not.toBe('none');
-    for (const other of others) {
-      expect(other.shadow, colorScheme).toBe('none');
-      expect(other.background, colorScheme).not.toBe(doCard.background);
+    const transparent = /rgba\(0, 0, 0, 0\)|transparent/;
+
+    // Do: the one raised card, solid, with no outline that could read as focus.
+    expect(cards.do.shadow, colorScheme).not.toBe('none');
+    expect(cards.do.background, colorScheme).not.toMatch(transparent);
+    expect(cards.do.outline, colorScheme).toBe('none');
+
+    // Plan and Delegate: see-through, flat.
+    for (const id of ['plan', 'limit']) {
+      expect(cards[id].background, `${id} ${colorScheme}`).toMatch(transparent);
+      expect(cards[id].shadow, `${id} ${colorScheme}`).toBe('none');
     }
-    // The raised look uses no outline, so it cannot read as a focus ring.
-    expect(
-      await page.locator('#quadrant-do').evaluate((el) => getComputedStyle(el).outlineStyle),
-    ).toBe('none');
+
+    // Eliminate: its own dimmed surface, flat.
+    expect(cards.drop.background, colorScheme).not.toMatch(transparent);
+    expect(cards.drop.background, colorScheme).not.toBe(cards.do.background);
+    expect(cards.drop.shadow, colorScheme).toBe('none');
   }
+});
+
+test('quadrant headers show no task count', async ({ page }) => {
+  await page.goto('/');
+  await addTask(page, 'do', 'Counted nowhere');
+  await expect(page.locator('.quadrant-count')).toHaveCount(0);
+  await expect(page.locator('#quadrant-do .quadrant-header')).toHaveText(/^\s*1\s*Do\s*Urgent and important\s*$/);
+});
+
+test('an empty quadrant shows only its heading and the add button', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('.quadrant-empty')).toHaveCount(0);
+  await expect(page.locator('#quadrant-plan')).not.toContainText('No tasks yet');
+  await expect(page.locator('#plan-list li')).toHaveCount(0);
+  await expect(page.locator('#plan-add-button')).toBeVisible();
 });
 
 test('the add button has no border by default and an outline in high contrast', async ({ page }) => {
