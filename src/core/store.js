@@ -22,6 +22,7 @@ const ACTION_HANDLERS = {
  * @param {{
  *   adapter: StorageAdapter,
  *   now?: () => Date,
+ *   seedTasks?: (now: Date) => Task[],
  *   timers?: { setTimeout: typeof setTimeout, clearTimeout: typeof clearTimeout },
  * }} options
  */
@@ -30,7 +31,7 @@ const defaultTimers = {
   clearTimeout: (...args) => clearTimeout(...args),
 };
 
-export function createStore({ adapter, now = () => new Date(), timers = defaultTimers }) {
+export function createStore({ adapter, now = () => new Date(), timers = defaultTimers, seedTasks }) {
   /** @type {{ tasks: Task[] }} */
   const state = { tasks: [] };
   /** @type {'ok' | 'unavailable' | 'newer-version'} */
@@ -100,7 +101,14 @@ export function createStore({ adapter, now = () => new Date(), timers = defaultT
       const raw = await adapter.load();
       const result = parse(raw);
 
-      if (result.status === 'ok' || result.status === 'empty') {
+      if (result.status === 'empty' && seedTasks) {
+        // Nothing has ever been saved here: start with the examples and save
+        // them, so they are seeded once and stay deleted once deleted.
+        state.tasks = seedTasks(now());
+        status = 'ok';
+        notice = null;
+        scheduleSave();
+      } else if (result.status === 'ok' || result.status === 'empty') {
         state.tasks = result.doc.tasks;
         status = 'ok';
         notice = null;

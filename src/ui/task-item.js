@@ -65,21 +65,14 @@ export function buildTaskItem(task, now) {
   const main = document.createElement('div');
   main.className = 'task-main';
 
+  // Title and due date share the first line; the notes preview goes below.
+  const headline = document.createElement('div');
+  headline.className = 'task-headline';
+
   const title = document.createElement('span');
   title.className = 'task-title';
   title.textContent = task.title;
-  main.append(title);
-
-  const preview = notesPreview(task.notes);
-  if (preview) {
-    const notes = document.createElement('span');
-    notes.className = 'task-notes-preview';
-    notes.textContent = preview;
-    main.append(notes);
-  }
-
-  const meta = document.createElement('div');
-  meta.className = 'task-meta';
+  headline.append(title);
 
   if (task.due) {
     const status = dueStatus(task, now);
@@ -94,10 +87,18 @@ export function buildTaskItem(task, now) {
     } else {
       badge.textContent = formatDue(task.due);
     }
-    meta.append(badge);
+    headline.append(badge);
   }
 
-  main.append(meta);
+  main.append(headline);
+
+  const preview = notesPreview(task.notes);
+  if (preview) {
+    const notes = document.createElement('span');
+    notes.className = 'task-notes-preview';
+    notes.textContent = preview;
+    main.append(notes);
+  }
 
   const deleteButton = document.createElement('button');
   deleteButton.type = 'button';

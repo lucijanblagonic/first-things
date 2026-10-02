@@ -34,21 +34,23 @@
   gap: 2px;
 }
 
+/* Title with its due date right after it; a long title wraps and the date
+   follows on the last line's row or drops below, never squeezed. */
+.task-headline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px var(--space-2);
+}
+
 .task-title {
+  min-width: 0;
   font-size: var(--font-size-task);
   overflow-wrap: break-word;
 }
 
 .task-item-completed .task-title {
   text-decoration: line-through;
-  color: var(--color-text-muted);
-}
-
-.task-meta {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: 0.78rem;
   color: var(--color-text-muted);
 }
 
@@ -61,14 +63,15 @@
   white-space: nowrap;
 }
 
-.task-meta:empty {
-  display: none;
-}
 
 .task-due-badge {
+  flex: none;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   padding: 0 var(--space-1);
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  white-space: nowrap;
 }
 
 .task-due-badge.task-due-overdue {

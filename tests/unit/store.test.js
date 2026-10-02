@@ -242,3 +242,44 @@ test('replaceAll: refused when stored data is from a newer version', async () =>
   assert.equal(await adapter.load(), newerDoc);
   assert.equal(adapter.backups.length, 0);
 });
+
+test('seedTasks: used once when nothing has been saved, then persisted', async () => {
+  const adapter = createMemoryAdapter();
+  let calls = 0;
+  const seedTasks = () => {
+    calls++;
+    return [importedTask({ id: 'seed-1', title: 'Example' })];
+  };
+
+  const first = createStore({ adapter, now: NOW, seedTasks });
+  await first.init();
+  await new Promise((r) => setTimeout(r, 0));
+  assert.equal(first.getState().tasks[0].title, 'Example');
+  assert.equal(JSON.parse(/** @type {string} */ (await adapter.load())).tasks.length, 1);
+
+  // Deleting the example and starting again must not bring it back.
+  first.dispatch('deleteTask', { id: 'seed-1' });
+  await new Promise((r) => setTimeout(r, 0));
+  const second = createStore({ adapter, now: NOW, seedTasks });
+  await second.init();
+  assert.deepEqual(second.getState().tasks, []);
+  assert.equal(calls, 1);
+});
+
+test('seedTasks: not used when saved data exists or could not be read', async () => {
+  const seedTasks = () => {
+    throw new Error('must not seed');
+  };
+
+  const withData = createMemoryAdapter();
+  await withData.save(JSON.stringify({ version: 1, tasks: [] }));
+  const store = createStore({ adapter: withData, now: NOW, seedTasks });
+  await store.init();
+  assert.deepEqual(store.getState().tasks, []);
+
+  const corrupt = createMemoryAdapter();
+  await corrupt.save('{not valid json');
+  const corruptStore = createStore({ adapter: corrupt, now: NOW, seedTasks });
+  await corruptStore.init();
+  assert.deepEqual(corruptStore.getState().tasks, []);
+});

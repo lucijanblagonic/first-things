@@ -11,7 +11,7 @@ The app SHALL be available at a public HTTPS URL that needs no account, login or
 
 #### Scenario: Opening the URL on another computer
 - **WHEN** a person opens the public URL in a supported browser on a computer that has never run the app
-- **THEN** the board loads with four empty quadrants and is fully usable
+- **THEN** the board loads with its four quadrants, holding only the example tasks, and is fully usable
 
 #### Scenario: Served from a sub-path
 - **WHEN** the app is served from a sub-path such as `/productivity-decision-matrix/`
@@ -22,7 +22,7 @@ Opening the public URL SHALL NOT give any visitor access to another visitor's ta
 
 #### Scenario: Two people use the same URL
 - **WHEN** one person adds tasks at the public URL and a second person opens the same URL in a different browser
-- **THEN** the second person sees an empty board and none of the first person's tasks
+- **THEN** the second person sees only the example tasks of a first visit and none of the first person's tasks
 
 ### Requirement: Installable as a standalone app
 The app SHALL provide the metadata browsers require to offer installation: a name, a short name, a start address inside the app, a standalone display mode, and icons at 192 and 512 pixels including one suitable for masking. Once installed, the app SHALL open in its own window without browser address bar or tabs, and SHALL start at the board.

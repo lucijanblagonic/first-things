@@ -19,6 +19,10 @@ Prefer the classic Eisenhower layout with **Do** in the top-left? Open
 **Left**. Only the columns swap; the important row always stays on top, and
 the `1`–`4` keys still follow priority.
 
+The first time you open it in a browser, the board starts with three example
+tasks that show due dates and notes. They are ordinary tasks: delete them and
+they stay gone.
+
 ## Header and Settings
 
 The header holds the title and two icon buttons (hover or focus them for a

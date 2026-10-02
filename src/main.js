@@ -1,6 +1,7 @@
 import { createStore } from './core/store.js';
 import { createLocalStorageAdapter } from './core/storage/local-storage.js';
 import { createMemoryAdapter } from './core/storage/memory.js';
+import { createDemoTasks } from './core/demo.js';
 import { getQuadrant } from './core/quadrants.js';
 import { activeTasks, isArchived } from './core/selectors.js';
 import { initAnnouncer, announce } from './ui/announcer.js';
@@ -34,7 +35,7 @@ async function main() {
   const adapterAvailable = localAdapter.isAvailable ? localAdapter.isAvailable() : true;
   const adapter = adapterAvailable ? localAdapter : createMemoryAdapter();
 
-  const store = createStore({ adapter, now });
+  const store = createStore({ adapter, now, seedTasks: createDemoTasks });
   await store.init();
 
   const state = store.getState();

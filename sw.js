@@ -22,6 +22,7 @@ const PRECACHE_URLS = [
   'icons/icon.svg',
   'src/core/actions.js',
   'src/core/dates.js',
+  'src/core/demo.js',
   'src/core/quadrants.js',
   'src/core/schema.js',
   'src/core/selectors.js',
