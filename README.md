@@ -12,7 +12,7 @@ by default:
 | 3        | bottom-right | Delegate  | Urgent but not important     |
 | 4        | bottom-left  | Eliminate | Not urgent and not important |
 
-**Live app:** https://lucijanblagonic.github.io/productivity-decision-matrix/
+**Live app:** https://lucijanblagonic.github.io/first-things/
 
 Prefer the classic Eisenhower layout with **Do** in the top-left? Open
 **Settings** (gear icon, `?`, or `⌘/Ctrl + ,`) and set *Urgent column* to
